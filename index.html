@@ -20,21 +20,46 @@
     ga('send', 'pageview');
 
   </script>
+  <!--TEMPLATES-->
+  <!--Sponsor template-->
+  <template id="sponsorTemplate">
+    <div class="sponsor">
+      <a href="{link}"><img src="{imageUrl}" alt="{name}"></a>
+      <p>{bio}</p>
+    </div>
+  </template>
+
 </head>
 	
 <body>
   <header>
     <img src="assets/img/logo.png"/>
+    <nav>
+      <ul>
+        <li data-bind-view="home">
+          <a href="#/home">Home</a>
+        </li>
+        <!--
+        <li data-bind-view="team">
+          <a href="#/team">The team</a>
+        </li>
+        -->
+        <li data-bind-view="sponsors">
+          <a href="#/sponsors">Sponsors</a>
+        </li>
+      </ul>
+    </nav>
   </header>
   <main>
-    <article id="landing">
+  <!-- Home view -->
+    <article id="home" class="view">
       <div id="firstLine" class="line"></div>
       <div class="circle first hasOuterLines">
         <h1>Imagine...</h1>
         <!--pre formatted text to match design-->
         <pre id="imagineText" class="invisible">
 ...a world where you could
-travel from Sweden
+travel from Stockholm
 to Oslo in 
 30 mins.
         </pre>
@@ -108,6 +133,25 @@ it a reality
         </a>
       </div>    
     </article>
+    <!-- Team view -->
+    <article id="team" class="view">
+      <h1>Team page</h1>
+    </article>
+    <!-- Sponsors view -->
+    <article id="sponsors" class="view">
+      <div class="first row">
+      </div>
+      <div class="second row">
+      </div>
+      <div class="third row">
+      </div>
+      <div class="fourth row">
+      </div>
+      <div class="fifth row">
+      </div>
+      <div class="sixth row">
+      </div>
+    </article>
   </main>
   <footer>
     <div>
@@ -118,6 +162,13 @@ it a reality
       <p>
           All Rights Reserved.
       </p>
+    </div>
+    <div>
+        <h3>CONTACT US</h3>
+        <a href="mailto:contact@rloop.org">
+          <i class="fa fa-envelope fa-lg"></i>
+          contact@rloop.org
+        </a>
     </div>
     <div>
         <h3>FOLLOW US</h3>
