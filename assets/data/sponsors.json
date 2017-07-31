@@ -39,7 +39,8 @@
       "imageUrl":"assets/img/sponsors/arxpax.png",
       "bio":"Arx Pax invented the patented Magnetic Field Architecture (MFA) technology, a more efficient way to transmit electromagnetic energy. Strategic applications of MFA technology and the use of MFA-based hover engines include structural isolation, recreation and entertainment, industrial automation, and transportation.",
       "link":"http://arxpax.com/",
-      "row":5
+      "row":5,
+      "marginBottom": 65
     },
     {
       "name":"ANSYS",
@@ -74,7 +75,8 @@
       "imageUrl":"assets/img/sponsors/ips_logo.png",
       "bio":"IPS (International Power Supply) is a 27 years experienced company specializing in the R&D and manufacturing of power electronics and energy conversion technologies.",
       "link":"http://www.ips-group.net/en",
-      "row":5
+      "row":5,
+      "marginBottom": 35
     },
     {
       "name":"Coast Metal Cutting",

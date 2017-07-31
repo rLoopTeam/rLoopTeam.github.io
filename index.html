@@ -24,11 +24,36 @@
   <!--Sponsor template-->
   <template id="sponsorTemplate">
     <div class="sponsor">
-      <a href="{link}"><img src="{imageUrl}" alt="{name}"></a>
+      <a href="{link}">
+        <img src="{imageUrl}" alt="{name}" style="margin-bottom: {marginBottom}px">
+      </a>
       <p>{bio}</p>
     </div>
   </template>
-
+  <!--Report template-->
+  <template id="reportTemplate">
+    <div class="report">
+      <a href="{link}" target="_blank">
+        <div class="logo">
+          <img src="assets/img/press/{name}.png">
+        </div>
+        <div>
+          <p>{title}</p>
+        </div>
+      </a>
+    </div>
+  </template>
+  <!--Member template-->
+  <template id="memberTemplate">
+    <div class="member">
+      <img src="{imageUrl}" alt="{name}">
+      <div class="info">
+        <h1>{name}</h1>
+        <h2>{title}</h2>
+        <h3>{location}</h3>
+      </div>
+    </div>
+  </template>
 </head>
 	
 <body>
@@ -39,13 +64,17 @@
         <li data-bind-view="home">
           <a href="#/home">Home</a>
         </li>
-        <!--
-        <li data-bind-view="team">
-          <a href="#/team">The team</a>
-        </li>
-        -->
         <li data-bind-view="sponsors">
           <a href="#/sponsors">Sponsors</a>
+        </li>
+        <li data-bind-view="team">
+          <a href="#/team">The Team</a>
+        </li>
+        <li data-bind-view="press">
+          <a href="#/press">Press</a>
+        </li>
+        <li data-bind-view="about">
+          <a href="#/about">About</a>
         </li>
       </ul>
     </nav>
@@ -135,7 +164,53 @@ it a reality
     </article>
     <!-- Team view -->
     <article id="team" class="view">
-      <h1>Team page</h1>
+      <div class="container">
+      </div>
+    </article>
+    <!-- Press view -->
+    <article id="press" class="view">
+      <div class="container">
+        <!-- To be filled with reports -->
+      </div>
+    </article>
+    <!-- About view -->
+    <article id="about" class="view">
+      <div class="circle what">
+        <h1>What is rLoop?</h1>
+        <h2>rLoop is a non-profit, open source, online think tank.</h2>
+        <p>Our goal is to democratize the Hyperloop by embracing open source and collaborative design and development. Since our founding, more than 140 members from over 14 countries have rallied behind this concept.</p>
+        <p>Together we are revolutionizing transportation, and our approach to realizing it is just as revolutionary.</p>
+        <a href="#/team" class="button">Meet our team</a>
+      </div>
+
+      <div class="circle group-photo">
+        <img src="assets/img/rloop-groupmod.jpg" alt="rLoop team">
+      </div>
+      <div class="circle mission">
+        <h1>Our Mission</h1>
+        <p>The rLoop competition pod is named rPod, to differentiate from development of our full scale Hyperloop pod.</p>
+        <p>The rPod needs to perform the mission of safe, cost-effective, and efficient high speed transit over the length of the Hyperloop test track while providing a comfortable cabin for a self-contained flight data recorder and passenger dummy, in order to win the SpaceX Competition.</p>
+      </div>
+      <div class="circle pod">
+        <img src="assets/img/rloop_pod_transparent.png">
+      </div>
+      <div class="circle pod2">
+        <img src="assets/img/rLoop V6 3AM.273 - Final.png">
+      </div>
+      <div class="circle objectives">
+        <h1 >Mission Objectives</h1>
+        <ul>
+          <li>To transit at high speeds over the length of the Hyperloop test track.</li>
+          <li>To provide a comfortable cabin for the self contained flight data recorder.</li>
+          <li>To be compatible with the functional capabilities of the Hyperloop.</li>
+          <li>To function within the low-pressure environment of the Hyperloop.</li>
+          <li>To provide a safe design for the competition.</li>
+          <li>To provide an energy efficient means of transportation.</li>
+          <li>To ensure high system maintainability during competition operations.</li>
+          <li>To minimize system cost.</li>
+          <li>To win the SpaceX competition.</li>
+        </ul>
+      </div>
     </article>
     <!-- Sponsors view -->
     <article id="sponsors" class="view">
