@@ -7,11 +7,19 @@
       "row":1
     },
     {
+      "name":"Digi-Key",
+      "imageUrl":"assets/img/sponsors/digikey.png",
+      "bio":"Digi-Key is the fourth largest electronic component distributor in North America, and fifth largest in the world. Digi-Key serves design engineers and the prototyping market, as well as an expanding role in supplying production quantities for OEMs and contract manufacturers.",
+      "link":"https://www.digikey.com",
+      "row":2
+    },
+    {
       "name":"soylent",
       "imageUrl":"assets/img/sponsors/soylentlarge.jpg",
       "bio":"Soylent™ is a pioneer in food technology, producing healthy, functional foods that are good for the body and the planet. Soylent is produced with sustainability and efficiency in mind to create a convenient, nutritious, and affordable meal that is better for our health and the environment.",
       "link":"http://www.soylent.com/",
-      "row":2
+      "row":5,
+      "marginBottom": 35
     },
     {
       "name":"Autodesk",
@@ -50,6 +58,13 @@
       "row":4
     },
     {
+      "name":"IPS",
+      "imageUrl":"assets/img/sponsors/ips_logo.png",
+      "bio":"IPS (International Power Supply) is a 27 years experienced company specializing in the R&D and manufacturing of power electronics and energy conversion technologies.",
+      "link":"http://www.ips-group.net/en",
+      "row":6
+    },
+    {
       "name":"McNichols",
       "imageUrl":"assets/img/sponsors/mcnichols.png",
       "bio":"McNICHOLS Company is North America’s leading supplier and fabricator of perforated metal, expanded metal, wire mesh, architectural metals and a variety of gratings products.",
@@ -69,14 +84,6 @@
       "bio":"Regalix is a digital marketing company that creates value and revenue growth with cutting edge marketing techniques and innovation models.",
       "link":"http://www.regalix.com/",
       "row":6
-    },
-    {
-      "name":"IPS",
-      "imageUrl":"assets/img/sponsors/ips_logo.png",
-      "bio":"IPS (International Power Supply) is a 27 years experienced company specializing in the R&D and manufacturing of power electronics and energy conversion technologies.",
-      "link":"http://www.ips-group.net/en",
-      "row":5,
-      "marginBottom": 35
     },
     {
       "name":"Coast Metal Cutting",
