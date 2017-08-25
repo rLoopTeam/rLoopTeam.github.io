@@ -20,6 +20,23 @@
     ga('send', 'pageview');
 
   </script>
+  <!-- Facebook Pixel Code -->
+  <script>
+  !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+  n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+  n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+  t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+  document,'script','https://connect.facebook.net/en_US/fbevents.js');
+  fbq('init', '670386189819634');
+  fbq('track', 'PageView');
+  </script>
+  <noscript><img height="1" width="1" style="display:none"
+  src="https://www.facebook.com/tr?id=670386189819634&ev=PageView&noscript=1"
+  /></noscript>
+  <!-- DO NOT MODIFY -->
+  <!-- End Facebook Pixel Code -->
+
+
   <!--TEMPLATES-->
   <!--Sponsor template-->
   <template id="sponsorTemplate">
@@ -57,6 +74,29 @@
 </head>
 	
 <body>
+  <div id="newsletterPrompt" class="faded">
+    <div id="newsletterBox">
+
+      <div id="closeNewsletter">X</div>
+      <div class="first">
+        <h1>
+          rLoop is decentralizing high technology, starting with the Hyperloop
+        </h1>
+        <p>
+          For three years, we've created the world's top Hyperloop tech as a decentralized team. Now it’s time for rLoop to grow ... and be owned by the blockchain community. Back the engineering revolution.
+        </p>         
+      </div>
+      <div class="second">
+        <p><strong>Join our email community to learn what comes next</strong></p>
+        <form action="//rloop.us12.list-manage.com/subscribe/post?u=131680a7fd56be89b79329f9b&amp;id=69fc70f978" method="post" target="_blank">
+          <input type="email" value="" name="EMAIL" class="email" id="mce-EMAIL" placeholder="example@host.com" required/>
+          <input type="submit" class="submit button"  value="Send"/>
+          <!-- real people should not fill this in and expect good things - do not remove this or risk form bot signups-->
+          <div style="position: absolute; left: -5000px;" aria-hidden="true"><input type="text" name="b_131680a7fd56be89b79329f9b_69fc70f978" tabindex="-1" value=""></div>
+        </form>
+      </div>    
+    </div>
+  </div>
   <header>
     <img src="assets/img/logo.png"/>
     <nav>
@@ -166,21 +206,6 @@ it a reality
     <article id="team" class="view">
       <div class="container">
       </div>
-      <div class="conclusion">
-        <p>Stay in the loop, sign up for our newsletter:</p>
-        <div>
-          <form action="//rloop.us12.list-manage.com/subscribe/post?u=131680a7fd56be89b79329f9b&amp;id=69fc70f978" method="post" target="_blank">
-            <input type="email" value="" name="EMAIL" class="email" id="mce-EMAIL" placeholder="example@host.com" required/>
-            <input type="submit" class="submit button"  value="Send"/>
-            <!-- real people should not fill this in and expect good things - do not remove this or risk form bot signups-->
-            <div style="position: absolute; left: -5000px;" aria-hidden="true"><input type="text" name="b_131680a7fd56be89b79329f9b_69fc70f978" tabindex="-1" value=""></div>
-          </form>
-        </div>
-        <p>Ready to change the world?</p>
-        <a target="_blank" class="join button" href="http://bit.ly/joinrLoop">
-          Join the rLoop team
-        </a>
-      </div> 
     </article>
     <!-- Press view -->
     <article id="press" class="view">
