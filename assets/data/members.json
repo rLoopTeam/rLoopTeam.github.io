@@ -35,5 +35,6 @@
   { "name":"Kevin Miller", "title": "Aerodynamics/Mechanical", "location": "USA", "imageUrl": "assets/img/members/kevin_miller.png" },
   { "name":"Clarence Akagu", "title": "Mechanical/Manufacturing", "location": "Nigeria", "imageUrl": "assets/img/members/clarence_akagu.png" },
   { "name":"Michael Elmore", "title": "Numerical Simulation", "location": "USA", "imageUrl": "assets/img/members/michael_elmore.png" },
-  { "name":"Nick Pope", "title": "Manufacturing", "location": "USA", "imageUrl": "assets/img/members/nick_pope.png" }
+  { "name":"Nick Pope", "title": "Manufacturing", "location": "USA", "imageUrl": "assets/img/members/nick_pope.png" },
+  { "name":"Gerard del Castillo", "title": "Frontend Developer", "location":"Spain", "imageUrl": "assets/img/members/gdcl.jpg"}
 ]
