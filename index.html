@@ -1,312 +1,152 @@
 <!DOCTYPE html>
+<html lang="en">
 <head>
-	<title>rLoop</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>rLoop holding</title>
+  <link href="https://fonts.googleapis.com/css?family=Roboto+Slab" rel="stylesheet"  property="stylesheet"/>
+  <style>
+    body {
+        background-image: url(pod_conv.jpg), url(pod_h.png), url(pod_v.png);
+        background-position: -10000px -10000px, -10000px -10000px, -10000px -10000px;
+        background-repeat: no-repeat, no-repeat, no-repeat;
+        font-family:  'Roboto Slab', serif;
+        background-color: rgb(4, 4, 4);
+        color: white;
+        width: 100vw;
+        -webkit-text-size-adjust: none;
+    }
+    
+    #logo, #logo-click-area {
+        position: absolute;
+        left: 0px;
+        top: 0px;
+        width: 0px;
+        height: 0px;
+        opacity: 0;
+    }
 
-	<link rel="shortcut icon" href="assets/img/favicon-32.png">
-	
-	<link href="https://fonts.googleapis.com/css?family=Roboto+Slab" rel="stylesheet">
-	<link rel="stylesheet" href="assets/css/app.min.css">
+    #logo-click-area {
+        cursor: pointer;
+    }
 
-  <script src="assets/js/app.min.js"></script>
-  <script src="https://unpkg.com/scrollreveal/dist/scrollreveal.min.js"></script>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    #pre-block, #post-block1, #post-block2, #post-block3, #post-block4 {
+        position: absolute;
+        left: 0px;
+        right: 0px;
+        text-align: center;
+        opacity: 0;
+    }
+
+    #particles-container {
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        right: 0px;
+        height: 100vh;
+        overflow: hidden;
+    }
+    
+    #particles {
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        right: 0px;
+        width: 100vw;
+        height: 300vw;
+    }
+    
+    #post-block3 {
+        color: rgb(0, 252, 254);
+    }
+
+    #post-block3 .hashtag {
+        /* color: white; */
+    }
+    
+    #post-block4 input[type="email"], #post-block4 input[type="submit"] {
+        box-sizing: border-box;
+        border: 1px solid rgb(0, 252, 254);
+        font-family: inherit;
+        font-size: inherit;
+        padding: 0.2em;
+        color: rgb(51, 52, 56);
+        margin: 0px;
+    }
+
+    #post-block4 input[type="email"] {
+        width: 13em;
+    }
+    
+    #post-block4 input[type="submit"] {
+        background-color: rgb(0, 252, 254);
+        text-transform: uppercase;
+        padding-left: 1em;
+        padding-right: 1em;
+        margin: 0px;
+    }
+    
+    ::-webkit-input-placeholder { /* Chrome */
+        color: rgb(230, 230, 230);
+    }
+    :-ms-input-placeholder { /* IE 10+ */
+        color: rgb(230, 230, 230);
+    }
+    ::-moz-placeholder { /* Firefox 19+ */
+        color: rgb(230, 230, 230);
+        opacity: 1;
+    }
+    :-moz-placeholder { /* Firefox 4 - 18 */
+        color: rgb(230, 230, 230);
+        opacity: 1;
+    }
+
+    input, textarea {
+      -webkit-appearance: none;
+      -webkit-border-radius: 0;
+    }
+  </style>
+  <script src="script.js"></script>
   <script>
-    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-
-    ga('create', 'UA-93488506-1', 'auto');
-    ga('send', 'pageview');
-
+    window.scenes = [
+      [4, draw_race_intro],      // 4 sec for the first text to appear
+      [2.2],                     // 2.2 sec delay
+      [2, draw_race_transition], // 2 sec for transition
+      [1],                       // 1 sec delay
+      [2, draw_change_color],    // 2 sec to change color
+    ];
   </script>
-  <!-- Facebook Pixel Code -->
-  <script>
-  !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-  n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
-  n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
-  t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
-  document,'script','https://connect.facebook.net/en_US/fbevents.js');
-  fbq('init', '670386189819634');
-  fbq('track', 'PageView');
-  </script>
-  <noscript><img height="1" width="1" style="display:none"
-  src="https://www.facebook.com/tr?id=670386189819634&ev=PageView&noscript=1"
-  /></noscript>
-  <!-- DO NOT MODIFY -->
-  <!-- End Facebook Pixel Code -->
-
-
-  <!--TEMPLATES-->
-  <!--Sponsor template-->
-  <template id="sponsorTemplate">
-    <div class="sponsor">
-      <a href="{link}">
-        <img src="{imageUrl}" alt="{name}" style="margin-bottom: {marginBottom}px">
-      </a>
-      <p>{bio}</p>
-    </div>
-  </template>
-  <!--Report template-->
-  <template id="reportTemplate">
-    <div class="report">
-      <a href="{link}" target="_blank">
-        <div class="logo">
-          <img src="assets/img/press/{name}.png">
-        </div>
-        <div>
-          <p>{title}</p>
-        </div>
-      </a>
-    </div>
-  </template>
-  <!--Member template-->
-  <template id="memberTemplate">
-    <div class="member">
-      <img src="{imageUrl}" alt="{name}">
-      <div class="info">
-        <h1>{name}</h1>
-        <h2>{title}</h2>
-        <h3>{location}</h3>
-      </div>
-    </div>
-  </template>
 </head>
-	
-<body>
-  <div id="newsletterPrompt" class="faded">
-    <div id="newsletterBox">
-
-      <div id="closeNewsletter">X</div>
-      <div class="first">
-        <h1>
-          rLoop is decentralizing high technology, starting with the Hyperloop
-        </h1>
-        <p>
-          For three years, we've created the world's top Hyperloop tech as a decentralized team. Now it’s time for rLoop to grow ... and be owned by the blockchain community. Back the engineering revolution.
-        </p>         
-      </div>
-      <div class="second">
-        <p><strong>Join our email community to learn what comes next</strong></p>
-        <form action="//rloop.us12.list-manage.com/subscribe/post?u=131680a7fd56be89b79329f9b&amp;id=69fc70f978" method="post" target="_blank">
-          <input type="email" value="" name="EMAIL" class="email" id="mce-EMAIL" placeholder="example@host.com" required/>
-          <input type="submit" class="submit button"  value="Send"/>
-          <!-- real people should not fill this in and expect good things - do not remove this or risk form bot signups-->
-          <div style="position: absolute; left: -5000px;" aria-hidden="true"><input type="text" name="b_131680a7fd56be89b79329f9b_69fc70f978" tabindex="-1" value=""></div>
-        </form>
-      </div>    
-    </div>
+<body id="body">
+  <svg id="logo" version="1.1" viewBox="0 0 211 111" xmlns="http://www.w3.org/2000/svg"><g transform="matrix(1.3333 0 0 -1.3333 -35.839 123.04)"><g transform="translate(46.317 68.953)"><path d="m0 0h-9.719c-4.681 0-9.719-3.345-9.719-10.691v-21.382c0-1.61 1.305-2.916 2.916-2.916 1.61 0 2.915 1.306 2.915 2.916v21.382c0 4.509 2.976 4.86 3.888 4.86h9.719c1.61 0 2.916 1.305 2.916 2.915 0 1.611-1.306 2.916-2.916 2.916" fill="#fff"/></g><g transform="translate(84.222 70.897)"><path d="m0 0c-10.182 0-18.466-8.284-18.466-18.466s8.284-18.466 18.466-18.466 18.466 8.284 18.466 18.466-8.284 18.466-18.466 18.466m0-31.101c-6.967 0-12.635 5.668-12.635 12.635s5.668 12.635 12.635 12.635 12.635-5.668 12.635-12.635-5.668-12.635-12.635-12.635" fill="#fff"/></g><g transform="translate(125.04 70.897)"><path d="m0 0c-10.182 0-18.466-8.284-18.466-18.466s8.284-18.466 18.466-18.466 18.466 8.284 18.466 18.466-8.284 18.466-18.466 18.466m0-31.101c-6.967 0-12.635 5.668-12.635 12.635s5.668 12.635 12.635 12.635 12.635-5.668 12.635-12.635-5.668-12.635-12.635-12.635" fill="#fff"/></g><g transform="translate(165.86 70.897)"><path d="m0 0c-10.164 0-18.466-8.302-18.466-18.466v-39.848c0-1.611 1.305-2.916 2.916-2.916 1.61 0 2.915 1.305 2.915 2.916 0 14.578 17.43 21.002 22.559 24.291 5.129 3.288 8.542 9.04 8.542 15.557 0 10.164-8.302 18.466-18.466 18.466m0-31.101c-7.013 0-12.635 5.622-12.635 12.635 0 7.012 5.622 12.635 12.635 12.635s12.635-5.623 12.635-12.635c0-7.013-5.622-12.635-12.635-12.635" fill="#fff"/></g><g transform="translate(62.394 39.789)"><path d="m0 0-0.462 7e-3c-1.332 0.065-2.008 1.047-2.008 2.916v40.82c0 6.418-5.231 8.747-8.747 8.747-1.61 0-2.916-1.305-2.916-2.915s1.306-2.916 2.916-2.916c0.877 0 2.916-0.284 2.916-2.916v-40.82c0-6.417 4.649-8.747 7.775-8.747l0.105 8e-3c1.606-0.116 3.002 1.092 3.118 2.697 0.117 1.607-1.091 3.003-2.697 3.119" fill="#fff"/></g><g transform="translate(165.86 59.234)"><path d="m0 0c3.757 0 6.803-3.046 6.803-6.803 0-3.758-3.046-6.804-6.803-6.804-3.758 0-6.803 3.046-6.803 6.804 0 3.757 3.045 6.803 6.803 6.803" fill="#fff"/></g><g transform="translate(165.73 47.575)"><path d="m0 0c2.726 0 4.943 2.217 4.943 4.943 0 2.725-2.217 4.942-4.943 4.942s-4.943-2.217-4.943-4.942c0-2.726 2.217-4.943 4.943-4.943" fill="#00fcff"/></g><g transform="translate(165.73 47.575)"><path d="m0 0c2.726 0 4.943 2.217 4.943 4.943 0 2.725-2.217 4.942-4.943 4.942s-4.943-2.217-4.943-4.942c0-2.726 2.217-4.943 4.943-4.943z" fill="none" stroke="#00fcff" stroke-width="4.5"/></g></g></svg>
+  <div id="pre-block">
+    for the
   </div>
-  <header>
-    <img src="assets/img/logo.png"/>
-    <nav>
-      <ul>
-        <li data-bind-view="home">
-          <a href="#/home">Home</a>
-        </li>
-        <li data-bind-view="sponsors">
-          <a href="#/sponsors">Sponsors</a>
-        </li>
-        <li data-bind-view="team">
-          <a href="#/team">The Team</a>
-        </li>
-        <li data-bind-view="press">
-          <a href="#/press">Press</a>
-        </li>
-        <li data-bind-view="about">
-          <a href="#/about">About</a>
-        </li>
-      </ul>
-    </nav>
-  </header>
-  <main>
-  <!-- Home view -->
-    <article id="home" class="view">
-      <div id="firstLine" class="line"></div>
-      <div class="circle first hasOuterLines">
-        <h1>Imagine...</h1>
-        <!--pre formatted text to match design-->
-        <pre id="imagineText" class="invisible">
-...a world where you could
-travel from Stockholm
-to Oslo in 
-30 mins.
-        </pre>
-      </div>
-      <div id="secondLine" class="line"></div>
-      <div class="circle second hasOuterLines">
-        <pre>
-Suddenly you 
-could live anywhere, 
-work anywhere, and 
-visit anywhere.
-        </pre>
-      </div>
-      <div id="thirdLine" class="line"></div>
-      <div class="circle third hasOuterCircle">
-        <h1>THE PROBLEM</h1>
-      </div>
-      <div id="fourthLine" class="line"></div>
-      <div id="fifthLine" class="line"></div>
-      <div id="sixthLine" class="line"></div>
-      <div class="circle fourth">
-        <h2>Travel is inconvenient and uncomfortable.</h2>
-        <pre>
-Roads and cities are 
-congested, current travel 
-experience is contemptible, 
-air pollution is drastically 
-harming human and 
-environmental 
-health.
-        </pre>
-      </div>
-      <div class="circle fifth">
-        <img src="assets/img/traffic.png"/>
-      </div>
-      <div id="seventhLine" class="line"></div>
-      <div class="circle sixth">
-        <pre>
-The time to 
-revolutionize 
-transportation and 
-bring the world closer 
-together is here, and 
-<strong>rLoop</strong> is making 
-it a reality
-        </pre>
-      </div>
-      <div class="circle seventh hasOuterCircle">
-        <h1>OUR SOLUTION</h1>
-      </div>
-      <div id="eighthLine" class="line"></div>
-      <div id="ninethLine" class="line"></div>
-      <div class="circle eighth">
-        <img src="assets/img/pod.jpg" />
-      </div>
-      <div class="conclusion">
-        <img src="assets/img/logo.png" />
-        <h2>Connecting the world as never before possible</h2>
-        <p>Stay in the loop, sign up for our newsletter:</p>
-        <div>
-          <form action="//rloop.us12.list-manage.com/subscribe/post?u=131680a7fd56be89b79329f9b&amp;id=69fc70f978" method="post" target="_blank">
-            <input type="email" value="" name="EMAIL" class="email" id="mce-EMAIL" placeholder="example@host.com" required/>
-            <input type="submit" class="submit button"  value="Send"/>
-            <!-- real people should not fill this in and expect good things - do not remove this or risk form bot signups-->
-            <div style="position: absolute; left: -5000px;" aria-hidden="true"><input type="text" name="b_131680a7fd56be89b79329f9b_69fc70f978" tabindex="-1" value=""></div>
-          </form>
-        </div>
-        <p>Ready to change the world?</p>
-        <a target="_blank" class="join button" href="http://bit.ly/joinrLoop">
-          Join the rLoop team
-        </a>
-      </div>    
-    </article>
-    <!-- Team view -->
-    <article id="team" class="view">
-      <div class="container">
-      </div>
-    </article>
-    <!-- Press view -->
-    <article id="press" class="view">
-      <div class="container">
-        <!-- To be filled with reports -->
-      </div>
-    </article>
-    <!-- About view -->
-    <article id="about" class="view">
-      <div class="circle what">
-        <h1>What is rLoop?</h1>
-        <h2>rLoop is a non-profit, open source, online think tank.</h2>
-        <p>Our goal is to democratize the Hyperloop by embracing open source and collaborative design and development. Since our founding, more than 140 members from over 14 countries have rallied behind this concept.</p>
-        <p>Together we are revolutionizing transportation, and our approach to realizing it is just as revolutionary.</p>
-        <a href="#/team" class="button">Meet our team</a>
-      </div>
-
-      <div class="circle group-photo">
-        <img src="assets/img/rloop-groupmod.jpg" alt="rLoop team">
-      </div>
-      <div class="circle mission">
-        <h1>Our Mission</h1>
-        <p>The rLoop competition pod is named rPod, to differentiate from development of our full scale Hyperloop pod.</p>
-        <p>The rPod needs to perform the mission of safe, cost-effective, and efficient high speed transit over the length of the Hyperloop test track while providing a comfortable cabin for a self-contained flight data recorder and passenger dummy, in order to win the SpaceX Competition.</p>
-      </div>
-      <div class="circle pod">
-        <img src="assets/img/rloop_pod_transparent.png">
-      </div>
-      <div class="circle pod2">
-        <img src="assets/img/rLoop V6 3AM.273 - Final.png">
-      </div>
-      <div class="circle objectives">
-        <h1 >Mission Objectives</h1>
-        <ul>
-          <li>To transit at high speeds over the length of the Hyperloop test track.</li>
-          <li>To provide a comfortable cabin for the self contained flight data recorder.</li>
-          <li>To be compatible with the functional capabilities of the Hyperloop.</li>
-          <li>To function within the low-pressure environment of the Hyperloop.</li>
-          <li>To provide a safe design for the competition.</li>
-          <li>To provide an energy efficient means of transportation.</li>
-          <li>To ensure high system maintainability during competition operations.</li>
-          <li>To minimize system cost.</li>
-          <li>To win the SpaceX competition.</li>
-        </ul>
-      </div>
-    </article>
-    <!-- Sponsors view -->
-    <article id="sponsors" class="view">
-      <div class="first row">
-      </div>
-      <div class="second row">
-      </div>
-      <div class="third row">
-      </div>
-      <div class="fourth row">
-      </div>
-      <div class="fifth row">
-      </div>
-      <div class="sixth row">
-      </div>
-    </article>
-  </main>
-  <footer>
-    <div>
-      <img src="assets/img/logo.png"/>
-      <p>
-          © 2017 rLoop, Incorporated.
-      </p>
-      <p>
-          All Rights Reserved.
-      </p>
-    </div>
-    <div>
-        <h3>CONTACT US</h3>
-        <a href="mailto:contact@rloop.org">
-          <i class="fa fa-envelope fa-lg"></i>
-          contact@rloop.org
-        </a>
-    </div>
-    <div>
-        <h3>FOLLOW US</h3>
-        <a target="_blank" href="https://twitter.com/rLoopTeam">
-          <i class="fa fa-twitter fa-lg"></i>
-        </a>
-        <a target="_blank" href="https://www.facebook.com/rloopteam">
-          <i class="fa fa-facebook fa-lg "></i>
-        </a>
-        <a target="_blank" href="https://www.reddit.com/r/rLoop">
-          <i class="fa fa-reddit-alien fa-lg"></i>
-        </a>
-        <a target="_blank" href="https://www.instagram.com/rloopteam">
-          <i class="fa fa-instagram fa-lg"></i>
-        </a>
-        <a target="_blank" href="https://www.linkedin.com/company/rloop-incorporated">
-          <i class="fa fa-linkedin fa-lg"></i>
-        </a>
-    </div>
-  </footer>
+  <div id="post-block1">
+    rLoop is delivering the vision for the Hyperloop.
+    Now you can be part of the engineering revolution.
+  </div>
+  <div id="post-block2">
+    For over two years, we've created the world's top
+    Hyperloop technology as a decentralised team.
+    Now we are bringing the Hyperloop onto the Blockchain,
+    allowing individuals to own and be part of the future.
+  </div>
+  <div id="post-block3">
+    <span class="hashtag">#servetheloop</span> <br/>
+    Join our email community to learn what comes next.
+  </div>
+  <div id="particles-container">
+    <svg id="particles" viewBox="0 0 100 300"></svg>
+  </div>
+  <div id="logo-click-area" onClick="start_animation(1.5)"></div>
+  <div id="post-block4">
+    <form action="https://rloop.us12.list-manage.com/subscribe/post" method="POST" id="subscribe">
+      <input type="hidden" name="u" value="131680a7fd56be89b79329f9b">
+      <input type="hidden" name="id" value="69fc70f978">
+      <input type="email" autocapitalize="off" autocorrect="off" name="MERGE0" id="MERGE0" value="" placeholder="example@host.com"><!--
+      --><input type="submit" name="submit" value="join">
+    </form>
+  </div>
 </body>
 </html>
-	
-	
-	
-	
