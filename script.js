@@ -463,11 +463,11 @@ function set_css(elem_id, style) {
 
 function set_lines(count) {
   var post1 = [
-    'rLoop is delivering the vision for ', 'the Hyperloop. ',
+    'rLoop is decentralizing high technology, ', 'starting with the Hyperloop. ',
     'Now you can be ', 'part of the engineering revolution. ',
   ],
   post2 = [
-    "For over two years, we've created the world's top Hyperloop technology as ", "a decentralised team. Now we are ",
+    "For almost three years, we've created the world's top Hyperloop technology as ", "a decentralised team. Now we are ",
     'bringing the Hyperloop onto ', 'the Blockchain, allowing individuals to own and be part of the future. ',
   ];
       br = '<br />';
