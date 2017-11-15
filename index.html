@@ -1,170 +1,359 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>rLoop</title>
-  <link href="https://fonts.googleapis.com/css?family=Roboto+Slab" rel="stylesheet"  property="stylesheet"/>
-   <script>
-    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-    ga('create', 'UA-72211727-3', 'auto');
-    ga('send', 'pageview');
-  </script>
-  <!-- Facebook Pixel Code -->
-  <script>
-  !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-  n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
-  n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
-  t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
-  document,'script','https://connect.facebook.net/en_US/fbevents.js');
-  fbq('init', '670386189819634');
-  fbq('track', 'PageView');
-  </script>
-  <noscript><img height="1" width="1" style="display:none"
-  src="https://www.facebook.com/tr?id=670386189819634&ev=PageView&noscript=1"
-  /></noscript>
-  <!-- DO NOT MODIFY -->
-  <!-- End Facebook Pixel Code -->
-  <style>
-    body {
-        background-image: url(pod_conv.jpg), url(pod_h.png), url(pod_v.png);
-        background-position: -10000px -10000px, -10000px -10000px, -10000px -10000px;
-        background-repeat: no-repeat, no-repeat, no-repeat;
-        font-family:  'Roboto Slab', serif;
-        background-color: rgb(4, 4, 4);
-        color: white;
-        width: 100vw;
-        -webkit-text-size-adjust: none;
-    }
-    #logo, #logo-click-area {
-        position: absolute;
-        left: 0px;
-        top: 0px;
-        width: 0px;
-        height: 0px;
-        opacity: 0;
-    }
-
-    #logo-click-area {
-        cursor: pointer;
-    }
-
-    #pre-block, #post-block1, #post-block2, #post-block3, #post-block4 {
-        position: absolute;
-        left: 0px;
-        right: 0px;
-        text-align: center;
-        opacity: 0;
-    }
-
-    #particles-container {
-        position: absolute;
-        top: 0px;
-        left: 0px;
-        right: 0px;
-        height: 100vh;
-        overflow: hidden;
-    }
+    <meta charset="UTF-8"></meta>
+    <meta name="viewport" content="width=device-width, initial-scale=0.5, maximum-scale=1, user-scalable=0"></meta>
+    <title>rLoop</title>  
     
-    #particles {
-        position: absolute;
-        top: 0px;
-        left: 0px;
-        right: 0px;
-        width: 100vw;
-        height: 300vw;
-    }
-    
-    #post-block3 {
-        color: rgb(0, 252, 254);
-    }
+    <!-- <link href="https://fonts.googleapis.com/css?family=Roboto+Slab|Roboto:300,400" rel="stylesheet"> -->
+    <link rel="stylesheet" type="text/css" href="css/preload.css"></link>
+    <!-- <link rel="stylesheet" type="text/css" href="css/progressbar-style.css" /> -->
 
-    #post-block3 .hashtag {
-        /* color: white; */
-    }
-    
-    #post-block4 input[type="email"], #post-block4 input[type="submit"] {
-        box-sizing: border-box;
-        border: 1px solid rgb(0, 252, 254);
-        font-family: inherit;
-        font-size: inherit;
-        padding: 0.2em;
-        color: rgb(51, 52, 56);
-        margin: 0px;
-    }
+    <!-- jQuery library -->
+    <script src="lib/jQuery/jquery-2.2.4.min.js"></script>
+    <script src="lib/jQuery/jquery.sticky.js"></script>
 
-    #post-block4 input[type="email"] {
-        width: 13em;
-    }
-    
-    #post-block4 input[type="submit"] {
-        background-color: rgb(0, 252, 254);
-        text-transform: uppercase;
-        padding-left: 1em;
-        padding-right: 1em;
-        margin: 0px;
-    }
-    
-    ::-webkit-input-placeholder { /* Chrome */
-        color: rgb(230, 230, 230);
-    }
-    :-ms-input-placeholder { /* IE 10+ */
-        color: rgb(230, 230, 230);
-    }
-    ::-moz-placeholder { /* Firefox 19+ */
-        color: rgb(230, 230, 230);
-        opacity: 1;
-    }
-    :-moz-placeholder { /* Firefox 4 - 18 */
-        color: rgb(230, 230, 230);
-        opacity: 1;
-    }
-
-    input, textarea {
-      -webkit-appearance: none;
-      -webkit-border-radius: 0;
-    }
-  </style>
-  <script src="script.js"></script>
-  <script>
-    window.scenes = [
-      [4, draw_race_intro],      // 4 sec for the first text to appear
-      [2.2],                     // 2.2 sec delay
-      [2, draw_race_transition], // 2 sec for transition
-      [1],                       // 1 sec delay
-      [2, draw_change_color],    // 2 sec to change color
-    ];
-  </script>
+    <link rel="stylesheet" type="text/css" href="css/main.css"></link>
+    <!-- <script src="https://1.jsconsole.com/js/remote.js?aafbf3f7-8539-4c46-9a0c-f26c4fb8c9ca"></script> -->
+    <script type="text/javascript" src="lib/scrollMagic/ScrollMagic.js"></script> 
+    <script type="text/javascript" src="lib/iScroll/iscroll-probe.js"></script>   
+    <script type="text/javascript" src="lib/scrollMagic/debug/debug.addIndicators.js"></script>  
+    <script data-main="js/" src="lib/requirejs/require.js"></script>
+    <script src="lib/requirejs/PackageLoader.js"></script> 
+    <script type="text/javascript" src="js/preloaded.js"></script>
 </head>
+
 <body id="body">
-  <svg id="logo" version="1.1" viewBox="0 0 211 111" xmlns="http://www.w3.org/2000/svg"><g transform="matrix(1.3333 0 0 -1.3333 -35.839 123.04)"><g transform="translate(46.317 68.953)"><path d="m0 0h-9.719c-4.681 0-9.719-3.345-9.719-10.691v-21.382c0-1.61 1.305-2.916 2.916-2.916 1.61 0 2.915 1.306 2.915 2.916v21.382c0 4.509 2.976 4.86 3.888 4.86h9.719c1.61 0 2.916 1.305 2.916 2.915 0 1.611-1.306 2.916-2.916 2.916" fill="#fff"/></g><g transform="translate(84.222 70.897)"><path d="m0 0c-10.182 0-18.466-8.284-18.466-18.466s8.284-18.466 18.466-18.466 18.466 8.284 18.466 18.466-8.284 18.466-18.466 18.466m0-31.101c-6.967 0-12.635 5.668-12.635 12.635s5.668 12.635 12.635 12.635 12.635-5.668 12.635-12.635-5.668-12.635-12.635-12.635" fill="#fff"/></g><g transform="translate(125.04 70.897)"><path d="m0 0c-10.182 0-18.466-8.284-18.466-18.466s8.284-18.466 18.466-18.466 18.466 8.284 18.466 18.466-8.284 18.466-18.466 18.466m0-31.101c-6.967 0-12.635 5.668-12.635 12.635s5.668 12.635 12.635 12.635 12.635-5.668 12.635-12.635-5.668-12.635-12.635-12.635" fill="#fff"/></g><g transform="translate(165.86 70.897)"><path d="m0 0c-10.164 0-18.466-8.302-18.466-18.466v-39.848c0-1.611 1.305-2.916 2.916-2.916 1.61 0 2.915 1.305 2.915 2.916 0 14.578 17.43 21.002 22.559 24.291 5.129 3.288 8.542 9.04 8.542 15.557 0 10.164-8.302 18.466-18.466 18.466m0-31.101c-7.013 0-12.635 5.622-12.635 12.635 0 7.012 5.622 12.635 12.635 12.635s12.635-5.623 12.635-12.635c0-7.013-5.622-12.635-12.635-12.635" fill="#fff"/></g><g transform="translate(62.394 39.789)"><path d="m0 0-0.462 7e-3c-1.332 0.065-2.008 1.047-2.008 2.916v40.82c0 6.418-5.231 8.747-8.747 8.747-1.61 0-2.916-1.305-2.916-2.915s1.306-2.916 2.916-2.916c0.877 0 2.916-0.284 2.916-2.916v-40.82c0-6.417 4.649-8.747 7.775-8.747l0.105 8e-3c1.606-0.116 3.002 1.092 3.118 2.697 0.117 1.607-1.091 3.003-2.697 3.119" fill="#fff"/></g><g transform="translate(165.86 59.234)"><path d="m0 0c3.757 0 6.803-3.046 6.803-6.803 0-3.758-3.046-6.804-6.803-6.804-3.758 0-6.803 3.046-6.803 6.804 0 3.757 3.045 6.803 6.803 6.803" fill="#fff"/></g><g transform="translate(165.73 47.575)"><path d="m0 0c2.726 0 4.943 2.217 4.943 4.943 0 2.725-2.217 4.942-4.943 4.942s-4.943-2.217-4.943-4.942c0-2.726 2.217-4.943 4.943-4.943" fill="#00fcff"/></g><g transform="translate(165.73 47.575)"><path d="m0 0c2.726 0 4.943 2.217 4.943 4.943 0 2.725-2.217 4.942-4.943 4.942s-4.943-2.217-4.943-4.942c0-2.726 2.217-4.943 4.943-4.943z" fill="none" stroke="#00fcff" stroke-width="4.5"/></g></g></svg>
-  <div id="pre-block">
-    for the
-  </div>
-  <div id="post-block1">
-    rLoop is decentralizing high technology, starting with the Hyperloop. Now you can be part of the engineering revolution.
-  </div>
-  <div id="post-block2">
-    For almost three years, we've created the world's top Hyperloop technology as a decentralised team. Now we are bringing the Hyperloop onto the Blockchain, allowing individuals to own and be part of the future.
-  </div>
-  <div id="post-block3">
-    <span class="hashtag">#servetheloop</span> <br/>
-    Join our email community to learn what comes next.
-  </div>
-  <div id="particles-container">
-    <svg id="particles" viewBox="0 0 100 300"></svg>
-  </div>
-  <div id="logo-click-area" onClick="start_animation(1.5)"></div>
-  <div id="post-block4">
-    <form action="https://rloop.us12.list-manage.com/subscribe/post" method="POST" id="subscribe">
-      <input type="hidden" name="u" value="131680a7fd56be89b79329f9b">
-      <input type="hidden" name="id" value="69fc70f978">
-      <input type="email" autocapitalize="off" autocorrect="off" name="MERGE0" id="MERGE0" value="" placeholder="example@host.com"><!--
-      --><input type="submit" name="submit" value="join">
-    </form>
-  </div>
+    <div id='preloadScreen'>
+        <div id='preloadInMiddle'>
+            <div id='logoinMiddle'></div>
+            <div id='preloadBar'>
+                <div id='preloadFill'></div>
+            </div>
+            <div id="plsRotateText">Please rotate your device for a better viewing experience.</div>
+        </div>
+    </div>
+
+    <div id="header">
+        <div id="logoCont">
+            <svg id="logo" version="1.1" viewBox="0 0 211 111" xmlns="http://www.w3.org/2000/svg"><g transform="matrix(1.3333 0 0 -1.3333 -35.839 123.04)"><g transform="translate(46.317 68.953)"><path d="m0 0h-9.719c-4.681 0-9.719-3.345-9.719-10.691v-21.382c0-1.61 1.305-2.916 2.916-2.916 1.61 0 2.915 1.306 2.915 2.916v21.382c0 4.509 2.976 4.86 3.888 4.86h9.719c1.61 0 2.916 1.305 2.916 2.915 0 1.611-1.306 2.916-2.916 2.916" fill="#fff"/></g><g transform="translate(84.222 70.897)"><path d="m0 0c-10.182 0-18.466-8.284-18.466-18.466s8.284-18.466 18.466-18.466 18.466 8.284 18.466 18.466-8.284 18.466-18.466 18.466m0-31.101c-6.967 0-12.635 5.668-12.635 12.635s5.668 12.635 12.635 12.635 12.635-5.668 12.635-12.635-5.668-12.635-12.635-12.635" fill="#fff"/></g><g transform="translate(125.04 70.897)"><path d="m0 0c-10.182 0-18.466-8.284-18.466-18.466s8.284-18.466 18.466-18.466 18.466 8.284 18.466 18.466-8.284 18.466-18.466 18.466m0-31.101c-6.967 0-12.635 5.668-12.635 12.635s5.668 12.635 12.635 12.635 12.635-5.668 12.635-12.635-5.668-12.635-12.635-12.635" fill="#fff"/></g><g transform="translate(165.86 70.897)"><path d="m0 0c-10.164 0-18.466-8.302-18.466-18.466v-39.848c0-1.611 1.305-2.916 2.916-2.916 1.61 0 2.915 1.305 2.915 2.916 0 14.578 17.43 21.002 22.559 24.291 5.129 3.288 8.542 9.04 8.542 15.557 0 10.164-8.302 18.466-18.466 18.466m0-31.101c-7.013 0-12.635 5.622-12.635 12.635 0 7.012 5.622 12.635 12.635 12.635s12.635-5.623 12.635-12.635c0-7.013-5.622-12.635-12.635-12.635" fill="#fff"/></g><g transform="translate(62.394 39.789)"><path d="m0 0-0.462 7e-3c-1.332 0.065-2.008 1.047-2.008 2.916v40.82c0 6.418-5.231 8.747-8.747 8.747-1.61 0-2.916-1.305-2.916-2.915s1.306-2.916 2.916-2.916c0.877 0 2.916-0.284 2.916-2.916v-40.82c0-6.417 4.649-8.747 7.775-8.747l0.105 8e-3c1.606-0.116 3.002 1.092 3.118 2.697 0.117 1.607-1.091 3.003-2.697 3.119" fill="#fff"/></g><g transform="translate(165.86 59.234)"><path d="m0 0c3.757 0 6.803-3.046 6.803-6.803 0-3.758-3.046-6.804-6.803-6.804-3.758 0-6.803 3.046-6.803 6.804 0 3.757 3.045 6.803 6.803 6.803" fill="#fff"/></g><g transform="translate(165.73 47.575)"><path d="m0 0c2.726 0 4.943 2.217 4.943 4.943 0 2.725-2.217 4.942-4.943 4.942s-4.943-2.217-4.943-4.942c0-2.726 2.217-4.943 4.943-4.943" fill="#00fcff"/></g><g transform="translate(165.73 47.575)"><path d="m0 0c2.726 0 4.943 2.217 4.943 4.943 0 2.725-2.217 4.942-4.943 4.942s-4.943-2.217-4.943-4.942c0-2.726 2.217-4.943 4.943-4.943z" fill="none" stroke="#00fcff" stroke-width="4.5"/></g></g></svg>
+        </div>
+        <div id='buttonsCont'>
+            <div id='btnh1' class='btnHeader'></div>
+            <div id='btnh2' class='btnHeader'></div>
+            <div id='btnh3' class='btnHeader'></div>
+            <div id='btnh4' class='btn-main'>one pager</div>
+        </div>
+        <div class="screen">
+            <div id="btnDown" class='btnArrow'></div>
+            <div id="btnUp" class='btnArrow'></div>
+        </div>
+    </div>
+
+
+
+    <!-- <main role='main' id='main'> -->    
+    <div id='main'>
+      <div id="containerScroll" class="scrollContainer" style="position: relative;">
+         <div class='container' style="position: relative;" > 
+            <section class="pageClass" id="pag1">
+                <div id="pre-block">
+                    for the
+                </div>
+                <div id="post-block1">
+                    rLoop is delivering the vision for the Hyperloop.
+                    Now you can be part of the engineering revolution.
+                </div>
+                <div id="post-block2">
+                    For over two years, we've created the world's top
+                    Hyperloop technology as a decentralised team.
+                    Now we are bringing the Hyperloop onto the Blockchain,
+                    allowing individuals to own and be part of the future.
+                </div>
+                <div id="post-block3">
+                    <span class="hashtag">#servetheloop</span> <br/>
+                    Join our email community to learn what comes next.
+                </div>
+                <div id="particles-container">
+                    <!-- <svg id="particles" viewBox="0 0 100 300"></svg> -->
+                </div>
+                <!-- <div id="logo-click-area" onClick="start_animation(1.5)"></div> -->
+                <div id="post-block4">
+                    <form action="https://rloop.us12.list-manage.com/subscribe/post" method="POST" id="subscribe">
+                        <input type="hidden" name="u" value="131680a7fd56be89b79329f9b">
+                        <input type="hidden" name="id" value="69fc70f978">
+                        <input type="email" autocapitalize="off" autocorrect="off" name="MERGE0" id="MERGE0" value="" placeholder="example@host.com"><!--
+                        --><input type="submit" name="submit" value="join" class="inputBtn">
+                    </form>
+                </div>
+            </section>
+            <!-- end page 1 -->
+
+            <section class="pageClass" id="pag2">
+                <div class="left-coin-text">
+                    <div id="txtTitl" class="section-tranz">rLoop Coin</div><br>
+                    <div id="mainTxt" class="section-tranz">The rCoin is the currency to power our network of minds and deliver our projects. The first project is in delivering the future of transportation, the Hyperloop.
+                    </div>
+                </div>
+            </section>
+            <!-- end page 2 -->
+
+            <section class="pageClass" id="pag3">
+                <div class="left-world-text">
+                    <div id="txtTitl3" class="section-tranz">#teamoftomorrow</div>
+                    <div id="mainTxt3" class="section-tranz">“rLoop is the first engineering organisation on the Blockchain. We are the inventors, the risk takers,  the game changers, the reality breakers. Together  we have become a team of over 1,200 members  from more than 56 countries. United by a desire  to be part of world-changing technology. We are the team of tomorrow” –rLoop
+                    </div>
+                    <div id="bottomTxt3" class="section-tranz">
+                    We are the experts from NASA, CERN, Tesla, GE, Honeywell, and dozens of other top technology companies; all on a journey where the impossible become possible. 
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- end page 3 -->
+
+            <section class="pageClass" id="pag4">
+                <div class="left-speed-text">
+                    <div id="txtTitl4" class="section-tranz">#theraceison</div>
+                    <div id="mainTxt4" class="section-tranz">“The   Hyperloop   is   a   new   way   to   connect, it’s as convenient as a train and faster than a plane” –rLoop
+                    </div>
+                    <br>
+                    <div id="bottomTxt4" class="section-tranz"><span class='weight400'>The Hyperloop is the future of transportation.</span>
+                        <br>Imagine a world where there are no weather disturbances, no check in, no flight delays and no  traffic jams or long commutes.<br><br>
+                        Technologically all of this is possible.<br>
+                         The future is here - the race is on.
+                    </div>
+                    <div id='watchVideoBtn' class='btn-main section-tranz'>WATCH VIDEO</div>
+
+                </div>
+            </section>
+
+            <!-- end page 4 -->
+
+            <section class="pageClass" id="pag5">
+                <div class="left-ppl-text">
+                    <div id="txtTitl5" class="section-tranz">#ownthehyperloop</div>
+                    <div id="mainTxt5" class="section-tranz">“Ethically as well as practically, the Blockchain allows everyone to invest and be part of the future.  The Hyperloop owned by the people is the purest manifestation of our  beliefs, values and capabilities. “ –rLoop
+                    </div>
+                    <div id="bottomTxt5" class="section-tranz">
+                   rLoop is delivering the Hyperloop. It’s now time for rLoop to grow  and be owned by the people. By bringing the Hyperloop onto the  Blockchain you have a chance to be part of it.
+                    </div>
+                    <div id='onePagerBtn' class='btn-main section-tranz'>one pager</div>
+                </div>
+            </section>
+
+            <!-- end page 5 -->
+
+            <section class="pageClass" id="pag6">
+                <div class="left-dots-text">
+                    <div id="txtTitl6" class="section-tranz">rNetwork of minds</div>
+                    <div id="mainTxt6" class="section-tranz">“When millions of people’s untapped talent has a place to go, the results are incredible. rLoop plans to harness the crowd to change the world.” –rLoop
+                    </div>                   
+                </div>
+            </section>
+
+            <!-- end page 6 -->
+
+            <section class="pageClass" id="pag7">
+                <div class="left-dots2-text">
+                    <div id="mainTxt7" class="section-tranz">There are two primary innovations that rLoop provides: the approach to developing a project, and the processes to facilitate network collaboration. This is what we call rNetwork – the rLoop Network. 
+                    </div>                   
+                </div>
+            </section>
+
+            <!-- end page 7 -->
+
+            <section class="pageClass" id="pag8">
+                <div class="left-dots3-text">
+                    <div id="mainTxt8" class="section-tranz">By freeing society from the bottle neck that has hampered technological advancement it enables people to collaborate and provide service wherever they are on the globe.  Together, operating under the rLoop values they will develop innovative technology that can have a global impact.
+                    </div>                   
+                </div>
+            </section>
+
+            <!-- end page 8 -->
+
+            <section class="pageClass" id="pag9">
+                <div class="left-dots4-text">
+                    <div id="mainTxt9" class="section-tranz">The ROI comes from selling the project outputs to governments and education as well as positively contributing to a better world.
+                    </div>                   
+                </div>
+            </section>
+
+            <!-- end page 9 -->
+
+            <section class="pageClass" id="pag10">
+                <div class="left-musk-text">
+                    <div id="txtTitl10" class="section-tranz">#teamoftomorrow</div>
+                    <div id="mainTxt10" class="section-tranz">In June 2015 Elon Musk, CEO of SpaceX announced a competition for engineering teams to design a pod for the Hyperloop and have it tested on a track at SpaceX.</div>
+                    
+                    <div id="bottomTxt10" class="section-tranz">Within hours of the competition announcement a post on Reddit encouraged the community to form a team to compete. The team began to grow as strangers came together with a shared vision to make the dream a reality. In an experiment of open collaboration the world’s first crowdsourced engineering team was born: rLoop. The team grew organically through social media. Meeting daily using online tools like Slack and Google Hangouts. Visions and concepts thrived in a non-hierarchical structure, while a lack of organisational obstacles enabled rapid progress.
+                    </div>
+                    <div id='roadmapBtn' class='btn-main section-tranz'>VIEW OUR ROAD MAP</div>
+
+                </div>
+            </section>
+
+            <!-- end page 10 -->
+
+            <section class="pageClass" id="pag11">
+                <div class="left-cyl-text">
+                    <div id="txtTitl11" class="section-tranz">#wearerLoop</div>
+                    <div id="mainTxt11" class="section-tranz">“For three years, we’ve created the world’s top Hyperloop technology as a decentralised team.” –rLoop<br></div>              
+                    <div id="bottomTxt11" class="section-tranz">Our journey so far...<br><br>• Worlds first most advanced Hyperloop prototype to date<br>•  First Pod to achieve static levitation in vacuum<br>•  First pod to demonstrate pressure vessel sustaining human life in vacuum<br>• First engineering system entirely designed and built by the crowd<br>• First engineering organisation on the Blockchain
+                    <div id="bottomTxt211" class="section-tranz2"></div>
+                    • Award winners:
+                        <div id="bottomTxt211" class="section-tranz2">
+                            • "Best Non-Student Hyperloop Design” from Elon Musk, SpaceX at the World’s First Hyperloop Design Competition<br>• "Best Hyperloop Design, Drama, and Excitement: Best Architectural Design and Presentation” from BuildEarthLive, Asite, and the Dubai Future Foundation<br>• “Next Big Thing” from Basware and IndieGoGo<br>• “Innovation Award” from SpaceX at the World’s First Hyperloop Pod Competition
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- end page 11 -->
+
+            <section class="pageClass" id="pag12">
+                <div class="left-brain-text">
+                    <div id="txtTitl12" class="section-tranz">#futureofwork</div>
+                    <div id="mainTxt12" class="section-tranz">“When millions of people’s untapped talent has a place to go, the results are incredible. rLoop plans to harness the crowd to change the world.”  –rLoop</div>              
+                    <div id="bottomTxt12" class="section-tranz">rLoop is not only delivering a new way to travel, we are demonstrating  a new way to work.<br><br>rLoop has shown that there is a better way of doing business, of collaborating and providing services. It offers vital lessons in how we can shape the future. How we can contribute to our global society and  its destiny together. United and sharing power for common purpose.<br><br>rLoop has shown that there is a vast untapped workforce of talented  and diverse people who are eager to participate in developing innovative  technology that can have global impact.  
+                    <div id='watchVideoBtn2' class='btn-main section-tranz'>WATCH VIDEO</div>                      
+                    </div>
+                    
+                </div>
+            </section>
+
+            <!-- end page 12 -->
+
+            <section class="pageClass" id="pag13">
+                <div class="left-partn-text">
+                    <div id="txtTitl13" class="section-tranz">rPartners</div>
+                    <div id="mainTxt13" class="section-tranz">“We believe that our vision, values and principles can create the momentum to drive radical change to realise the future of transportation and connect the world as never before.” –rLoop</div>              
+                    <div id="bottomTxt13" class="section-tranz">With thanks to our trusted partners who have supported our  journey and are united by the desire to be part of a world  changing technology...
+                    </div>
+                </div>
+            </section>
+
+            <!-- end page 13 -->
+
+            <section class="pageClass" id="pag14">
+                <div class="left-partn-text">
+                    <div id="txtTitl14" class="section-tranz">rNews</div>
+                    <div id="mainTxt14" class="section-tranz">“rLoop is a global movement with the ambition and  appetite to change the world. We are united by a shared goal of radical technological breakthroughs for the benefit of humanity.” –rLoop</div>              
+                    <div id="bottomTxt14" class="section-tranz">Our success to date has been driven from the experiences,  ideas and passion of our members who have over the last few  years put their time and effort into our journey. This journey  has received extensive media interest.
+                    </div>
+                </div>
+            </section>
+
+            <!-- end page 14 -->
+
+            <section class="pageClass" id="pag15">
+                <div class="left-end-text">
+                    <div id="txtTitl15" class="section-tranz">Be part of the future now</div><br>
+                    <div id="mainTxt15" class="section-tranz">“The rLoop is no cliché – the future  is coming and it’s going to be radical... <br>now is the time to join... <br> yours is the choice to make.” –rLoop</div><br><br>          
+                    <div id="bottomTxt15" class="section-tranz">
+                        <div id="post-block31">
+                            Be in the loop and join our email community.
+                        </div><br>
+                        <div id="post-block5">
+                            <form action="https://rloop.us12.list-manage.com/subscribe/post" method="POST" id="subscribe">
+                                <input type="hidden" name="u" value="131680a7fd56be89b79329f9b">
+                                <input type="hidden" name="id" value="69fc70f978">
+                                <input type="email" autocapitalize="off" autocorrect="off" name="MERGE0" id="MERGE0" value="" placeholder="example@host.com"><!--
+                                --><input type="submit" name="submit" value="join">
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- end page 15-->
+
+        </div>
+      </div>
+    </div>
+    <!-- </main> -->
+
+    <!-- scena 3d -->
+    <div id="webGLContent"></div>
+
+    <!-- assets -->
+
+
+    <!-- navigation -->
+    <div id="menuContent"></div>
+    <script type="text/javascript">jq=jQuery;</script>
+
+    <script type="x-shader/x-vertex" id="vertexshader">
+        attribute float alpha;
+        varying float vAlpha;
+        varying vec3 vColor;
+        void main() {
+            vAlpha = alpha;
+            vec4 mvPosition = modelViewMatrix * vec4( position, 1.0 );
+            gl_PointSize = 8.0;
+            gl_Position = projectionMatrix * mvPosition;
+        }
+    </script> 
+
+    <script type="x-shader/x-fragment" id="fragmentshader">
+        uniform vec3 color;
+        varying float vAlpha;
+        void main() {
+            gl_FragColor = vec4( color, vAlpha );
+        }
+    </script>
+
+    <script type="x-shader/x-vertex" id="vertexshaderP">
+
+        attribute float alpha;
+        attribute float size;
+        attribute vec3 customColor;
+        attribute vec2 aPoints;
+        uniform sampler2D texture;
+        varying vec3 vColor;
+        varying float vAlpha;
+
+        void main() {
+            vAlpha = alpha;
+            vColor = customColor;
+
+
+            vec4 pos=vec4(texture2D(texture,aPoints).xyz,1.0)+vec4(position,1.0);
+            //vec4 pos=vec4(position,1.0);
+            vec4 mvPosition =modelViewMatrix * pos;
+            gl_PointSize = size * ( 1000.0 / length( mvPosition.xyz ) );
+
+            gl_Position = projectionMatrix * mvPosition;
+
+        }
+
+
+    </script>
+
+    <script type="x-shader/x-fragment" id="fragmentshaderP">
+        #ifdef GL_ES
+        precision highp float;
+        #endif
+
+        uniform vec3 color;
+        uniform sampler2D texture_point;
+
+        varying vec3 vColor;
+        varying float vAlpha;
+
+        void main() {
+
+        gl_FragColor = vec4( color * vColor, vAlpha );
+        gl_FragColor = gl_FragColor * texture2D( texture_point, gl_PointCoord );
+        //gl_FragColor = vec4( color, vAlpha );
+
+        }
+
+
+    </script>
+   
 </body>
 </html>
+

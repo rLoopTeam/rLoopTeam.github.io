@@ -1,0 +1,125 @@
+#preloadScreen{
+	position: absolute;
+    top: 0px;
+	width: 100%;
+	height: 100%;
+	background-color: #FFFFFF;
+	z-index: 3000;
+}
+
+
+
+#preloadInMiddle{
+
+	position: absolute;
+
+    top: 36%;
+
+    left: 50%;
+
+    height: 200px;
+
+    width: 400px;
+
+    margin: -60px 0 0 -200px;
+    font-size: 2.5vh;
+    color: black;
+}
+
+
+
+#logoinMiddle{
+
+	/*margin-left:65px;*/
+	visibility: hidden;
+	margin-bottom: 10px;
+
+	position: relative;
+
+	width:30vh;
+
+	height:30vh;
+
+	background-image: url(../img/btn/portrait_warning_rloop.png);
+	background-repeat:no-repeat;
+
+	background-size:contain;
+
+}
+
+#plsRotateText {
+	display: none;
+}
+
+
+
+#preloadBar{
+
+	position: relative;
+
+	background-color: #ebebeb;
+
+	width:400px;
+
+	height: 5px;
+
+	border-radius: 5px;
+
+}
+
+
+
+#preloadFill{
+
+	width: 0%;
+
+	height: 100%;
+
+	border-radius: 5px;
+
+	background-color: #3096ca;
+
+}
+
+#logoinMiddle {
+	/*margin-left: 110px;*/
+	margin-bottom: 0px;
+}
+
+.preloadedQuestion {
+	width: 400px;
+}
+
+.preloadedText {
+	padding: 20px;
+	text-align: center;
+	width: 300px;
+	color: black;
+	font-size: 16px;
+	font-family: Lato;
+}
+
+.preBtn {
+	display: inline-block !important;
+	margin-left: 20px;
+	margin-right: 0px;
+}
+
+#preloadBtnNo {
+	margin-left: 25px;
+}
+
+.preloadCheckbox {
+	top: 2px !important;
+    margin-left: 25px;
+}
+
+.preloadText2 {
+	font-family: Lato;
+	color: #3096ca;
+	font-size: 13px;
+}
+
+#preloadedq {
+	display: none;
+}

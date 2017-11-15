@@ -1,0 +1,11 @@
+{
+	"projects":[
+		{
+			"name":"v-Table",
+			"url":"www.v-table.com",
+			"desc":"Visualisation of a virus database",
+			"img_small":"vtable_small.png",
+			"img_big":"vtable_big.png"
+		}
+	]
+}
