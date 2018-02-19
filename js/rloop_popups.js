@@ -1,5 +1,3 @@
-//MAIN CONTROLLER OF THE WEBSITE
-
 define(["setTheStyle", "../lib/three.js/three", "../lib/three.js/orbitControls", "../lib/three.js/firstPersonControls", "../lib/three.js/projector", "../lib/three.js/canvasRenderer", "../lib/three.js/stereoEffect", "../lib/three.js/deviceOrientationControls", "../lib/three.js/stats.min"], function(setTheStyle, THREE, orbitControls, firstPersonControls, Projector, CanvasRenderer, StereoEffect, DeviceOrientationControls, stats) {
     var rloop = {
         mobile: undefined,
@@ -167,126 +165,137 @@ define(["setTheStyle", "../lib/three.js/three", "../lib/three.js/orbitControls",
         //jq("#header").sticky({topSpacing:0, zIndex:10000});
         //jq("#coin").sticky({topSpacing:0, zIndex:10005});
 
-        // FUNCTION INITIALIZING ALL USED VARS
 
 
         var timer;
         var scrolling = false;
+        // $(window).bindFirst('scroll', function() {
+        //     clearTimeout(timer);
+        //     scrolling = true;
+        //     timer = setTimeout ( refresh, 100);
+        // });
+        // var refresh = function() {
+        //     scrolling = false;
+        //     //console.log('stopped scrolling');
+        // }
         rloop.mobile = isMobile;
         rloop.portrait = portrait;
 
-        
-        //ADDING SCROLLMAGIC CONTROLLER TO CONTROL THML SLIDES AND POSITIONS AND EVENTS
-
-        if (rloop.mobile)
+        //rloop.mobile = true;
+        if ( true )
         {
-            scrollMagicController = new ScrollMagic.Controller({
-                container: "#containerScroll",
-                globalSceneOptions: {
-                    triggerHook: 'onLeave',
+            if (rloop.mobile)
+            {
+                scrollMagicController = new ScrollMagic.Controller({
+                    container: "#containerScroll",
+                    globalSceneOptions: {
+                        triggerHook: 'onLeave',
 
-                }
-            });
+                    }
+                });
+            }
+            else {
+                scrollMagicController = new ScrollMagic.Controller({
+                    //container: "#containerScroll",
+                    // duration: "100%",
+                    globalSceneOptions: {
+                        triggerHook: 'onLeave',
+
+                    }
+                });
+            }
+
+            slides = document.querySelectorAll("section.pageClass")
+
+            for (var i=0; i<slides.length; i++) {
+
+                var s = new ScrollMagic.Scene({
+                        triggerElement: slides[i]
+                    })
+                    .setPin(slides[i])
+                    .on('enter', function (e){
+                        //leavingScene( e );
+                        //console.log('entered')
+                        startScene( e );
+                    })
+                    .on('start' , function (e){
+                        leavingScene ( e );
+                    })
+                    .on('progress', function (e) {
+                        progressInScene()
+                    })
+                    .on('update', function (e) {
+                        //console.log('should update:..' , e)
+                        var currentMoving = parseInt($(e.target.triggerElement()).attr('id').split('pag')[1]) - 1;
+                        //console.log('current moving: ', currentMoving, 'current stage: ', currentStage)
+                        if (currentMoving != currentStage) return;
+                        sliderUpdate(e);
+
+                    } )
+                    .on('shift', function(e){
+                        //console.log('shifted: ', $(e.target.triggerElement()).attr('id') );
+                    })
+                    .addTo(scrollMagicController)
+
+                    //if (!rloop.mobile) s.addIndicators();
+
+                    slidesScenes.push(s);
+
+            }
+
+
+            if (rloop.mobile)
+            {
+                myScroll = new IScroll('#containerScroll', {
+                    scrollX: false,
+                    // but do scroll vertical
+                    scrollY: true,
+                    // show scrollbars
+                    scrollbars: false,
+                    snap: false,
+                    // deactivating -webkit-transform because pin wouldn't work because of a webkit bug: https://code.google.com/p/chromium/issues/detail?id=20574
+                    // if you dont use pinning, keep "useTransform" set to true, as it is far better in terms of performance.
+                    useTransform: false,
+                    // deativate css-transition to force requestAnimationFrame (implicit with probeType 3)
+                    useTransition: false,
+                    // set to highest probing level to get scroll events even during momentum and bounce
+                    // requires inclusion of iscroll-probe.js
+                    probeType: 3,
+                    // pass through clicks inside scroll container
+                    click: true
+                    }
+                );
+
+
+                scrollMagicController.scrollPos(function(){
+                    return -myScroll.y;
+                });
+
+                myScroll.on('scroll', function(){
+                    scrollMagicController.update();
+                })
+                    //s.addIndicators({parent: '.container'})
+                    //console.log('myScroll: ', myScroll);
+                // scrollMagicController.scrollTo( function(newpos){
+                //     //console.log('trying to scroll to position:', newpos);
+                //     //myScroll.scrollTo(0, newpos, 1000)
+                // });
+            }
+
+            scrollMagicController.enabled(false);
         }
-        else {
-            scrollMagicController = new ScrollMagic.Controller({
-                //container: "#containerScroll",
-                // duration: "100%",
-                globalSceneOptions: {
-                    triggerHook: 'onLeave',
-
-                }
-            });
-        }
-
-        slides = document.querySelectorAll("section.pageClass")
-
-        //ADDING SLIDES TO CONTROLLER FROM HTML, ADDING CALLBACK FUNCTIONS ON EVENTS
-
-        for (var i=0; i<slides.length; i++) {
-
-            var s = new ScrollMagic.Scene({
-                    triggerElement: slides[i]
-                })
-                .setPin(slides[i])
-                .on('enter', function (e){
-                    //leavingScene( e );
-                    //console.log('entered')
-                    startScene( e );
-                })
-                .on('start' , function (e){
-                    leavingScene ( e );
-                })
-                .on('progress', function (e) {
-                    progressInScene()
-                })
-                .on('update', function (e) {
-                    //console.log('should update:..' , e)
-                    var currentMoving = parseInt($(e.target.triggerElement()).attr('id').split('pag')[1]) - 1;
-                    //console.log('current moving: ', currentMoving, 'current stage: ', currentStage)
-                    if (currentMoving != currentStage) return;
-                    sliderUpdate(e);
-
-                } )
-                .on('shift', function(e){
-                    //console.log('shifted: ', $(e.target.triggerElement()).attr('id') );
-                })
-                .addTo(scrollMagicController)
-
-                //if (!rloop.mobile) s.addIndicators();
-
-                slidesScenes.push(s);
-
-        }
-
-        //IF MOBILE ADDING EXTRA ISCROLL ACORDING TO MAGIKSCROLLER DOCUMENTATION
-
-
-        if (rloop.mobile)
-        {
-            myScroll = new IScroll('#containerScroll', {
-                scrollX: false,
-                // but do scroll vertical
-                scrollY: true,
-                // show scrollbars
-                scrollbars: false,
-                snap: false,
-                // deactivating -webkit-transform because pin wouldn't work because of a webkit bug: https://code.google.com/p/chromium/issues/detail?id=20574
-                // if you dont use pinning, keep "useTransform" set to true, as it is far better in terms of performance.
-                useTransform: false,
-                // deativate css-transition to force requestAnimationFrame (implicit with probeType 3)
-                useTransition: false,
-                // set to highest probing level to get scroll events even during momentum and bounce
-                // requires inclusion of iscroll-probe.js
-                probeType: 3,
-                // pass through clicks inside scroll container
-                click: true
-                }
-            );
-
-
-            scrollMagicController.scrollPos(function(){
-                return -myScroll.y;
-            });
-
-            myScroll.on('scroll', function(){
-                scrollMagicController.update();
-            });
-        }
-
-        scrollMagicController.enabled(false);
-        
-        // SETTING LAYOUT
 
         setTheStyle.set_layout();
+        //console.log('runnging');
+        //return;
+
+
 
 
         rloop.scene = new THREE.Scene();
         container = document.getElementById("webGLContent");
         width = container.clientWidth;
         height = container.clientHeight;
-
-        //LINKS TO IMAGES USED
 
         var imageAssets = [
             { name: 'step1', url:'theraceison.png'},
@@ -325,42 +334,65 @@ define(["setTheStyle", "../lib/three.js/three", "../lib/three.js/orbitControls",
         prevValue.height = window.innerHeight;
 
         clock = new THREE.Clock();
-        
-        //CALCULATING ZOOM FOR CAMERA FOV TO FIT ALL PARTICLES ON ALL SCREENS
-
         var zoomFromStandard = window.innerWidth / (1600 ) ;
         var heightZoomFromStandard = window.innerHeight / 1000;
-        
+        /*
+
+        //console.log('zoomFromStandard: ', zoomFromStandard);
+        if (zoomFromStandard) { //} && window.devicePixelRatio<=1) {
+            //camFOV = 45 / (zoomFromStandard*1.2);
+            if (portrait) camFOV = 45 / (zoomFromStandard*1.1);
+            else camFOV =  50 / (zoomFromStandard*1.0);
+        }
+        */
+
+        //if (window.devicePixelRatio > 1 && !rloop.mobile) defaultPixedSize = defaultPixedSize / 2;
+        //console.log('default pixel size: ', defaultPixedSize)
+        //defaultPixedSize = 1;
+        // if (rloop.portrait) {
+        //     camFOV = camFOV * 2.3;
+        //     defaultPixedSize = defaultPixedSize / 1.5;
+        // }
+
         defaultPixedSize = defaultPixedSize * (zoomFromStandard*1.2);
         if (zoomFromStandard>1 || rloop.mobile) defaultPixedSize = 1;
         if (heightZoomFromStandard < 1 && !rloop.mobile && defaultPixedSize>=1 )
             defaultPixedSize = 1 * heightZoomFromStandard * 1.2;
         if (defaultPixedSize>1.1) defaultPixedSize = 1.1;
-        
-        //INITIALIZIND THE THREE SCENE
+        //defaultPixedSize = 1;
+        //rloop.scene.add(iconSprites);
+
+        //cubeContainer = new THREE.Object3D();
+        //rloop.scene.add(cubeContainer);
 
         addRenderer3D(container, width, height);
-        
+        //if (bokeh) initPostProcessing();
         addCamera3D();
         addImages();
         addIcons();
+        //addMaterials();
         addLight3D();
+        ///addSkyBox();
+        ///addButtons();
         addControls();
-        
+        //addTree()
+        //initCubes();
+        //console.log('start interval')
         t = setInterval(function() {
             if (imageSteps.length == countLoading) {
-
-                //WAITING FOR IMAGES TO LOAD, THEN CREATING THE FIRST GEOMETRY 
-                //AND STARTING FIRST INTRO ANIMATION
-
+                //console.log('steps loaded: ', loadedSteps);
                 clearInterval(t);
                 rloop.animationStep = 0;
                 generateAllGeometries();
                 var partOobj = createGeometryFromInameData(loadedSteps[imageSteps[rloop.animationStep]].imgData, loadedSteps[imageSteps[rloop.animationStep]].img);
                 rloop.particles = partOobj.particles;
                 rloop.bufferParticles = partOobj.bParticles;
+                //rloop.bufferParticles.position.y = 0.3;
                 rloop.scene.add(rloop.bufferParticles);
                 startAnimationStep(rloop.particles);
+                //rloop.animating = true;
+                //console.log('inscene now: ', rloop.scene);
+                //displayImageInCubes(imagesArray[0]);
             }
         }, 500)
 
@@ -374,8 +406,6 @@ define(["setTheStyle", "../lib/three.js/three", "../lib/three.js/orbitControls",
 
     function addEvents()
     {
-        //ADDING EVENT TO INTERFACE
-
         $('#logoCont').on('click', function(e){
             //click on logo
             var durr = currentPage * 300;
@@ -389,7 +419,18 @@ define(["setTheStyle", "../lib/three.js/three", "../lib/three.js/orbitControls",
             //Clicked on road map
         })
 
-        
+        $('#watchVideoBtn').on('click', function (e){
+            var url = 'http://c.brightcove.com/services/viewer/htmlFederated?&width=620&height=363&flashID=myExperience5266210989001&identifierClassName=BrightcoveExperienceID_9508&bgcolor=%23000000&playerID=default&playerKey=AQ~~%2CAAABNbwiBqk~%2CuKJgjFOOWvE3WByT-ymNV7DaGn-7XkD6&isVid=true&isUI=true&dynamicStreaming=true&autoStart=true&wmode=transparent&%40videoPlayer=5266210989001&htmlFallback=true&includeAPI=true&templateLoadHandler=myTemplateLoaded&templateReadyHandler=onTemplateReady&debuggerID=&startTime=1508359072844&refURL=not%20available';
+            window.open(url,'_blank');
+            //Clicked on road map
+        })
+
+        $('#watchVideoBtn2').on('click', function (e){
+            var url = 'https://www.youtube.com/watch?v=C0wcdmJ_2ks&feature=youtu.be';
+            window.open(url,'_blank');
+            //Clicked on road map
+        })
+
         $('#onePagerBtn').on('click', function (e){
             var url = 'pdf/rLoop_one_pager.pdf';
             window.open(url,'_blank');
@@ -454,66 +495,57 @@ define(["setTheStyle", "../lib/three.js/three", "../lib/three.js/orbitControls",
         });
 
         // CODE FOR POPUPS:
-        
+        //TEMP REMOVED
+        /*
+
         var div = document.getElementById("popupVid");
         var iframe;
         var vidHolder;
-        var isVideo = false;
         var p = $(".popup__overlay");
 
             $("#watchVideoBtn").click(function() {
-              isVideo = true;
+              iframe = div.getElementsByTagName("iframe")[0].contentWindow;
+              //iframe.src = 'https://www.youtube.com/embed/Vu3bW1sVf14';
+              scrollMagicController.enabled(false);
               p.css("display", "block");
-              p.css("visibility", "visible").css("opacity", "1");
               vidHolder = $(".videoHolder")[0];
               disableScroll();
+              //console.log('vid holder: ', vidHolder);
               $(vidHolder).css("display", "block");
-              iframe = div.getElementsByTagName("iframe")[0].contentWindow;
-              iframe = $('#vidframe1')[0].contentWindow;
-              document.getElementById('popupVid').style.paddingTop = '0px';
+              // $(iframe).css("visibility", "visible");
             });
 
             $("#watchVideoBtn2").click(function() {
-              isVideo = true;
+              iframe = div.getElementsByTagName("iframe")[1].contentWindow;
+              scrollMagicController.enabled(false);
               p.css("display", "block");
-              p.css("visibility", "visible").css("opacity", "1");
               disableScroll();
               vidHolder = $(".videoHolder")[1];
               $(vidHolder).css("display", "block");
-              iframe = div.getElementsByTagName("iframe")[1].contentWindow;
-              document.getElementById('popupVid').style.paddingTop = '0px';
+              // $(iframe).css("visibility", "visible");
             });
-
-            $('#inputNow').click(function(){
-                isVideo = false;
-                p.css("display", "block");
-                p.css("visibility", "visible").css("opacity", "1");
-                disableScroll();
-                vidHolder = $(".videoHolder")[2];
-                $(vidHolder).css("display", "block");
-                iframe = div.getElementsByTagName("iframe")[2].contentWindow;
-                document.getElementById('popupVid').style.paddingTop = '40px';
-            })
-
             p.click(function(event) {
               e = event || window.event;
               if (e.target == this) {
-
-                p.css("visibility", "hidden").css("opacity", "0");
+                $(p).css("display", "none");
                 $(vidHolder).css("display", "none");
-                if (isVideo) toggleVideo("hide");
-                isVideo = false;
+                //scrollMagicController.enabled(true);
+                // $(iframe).css("visibility", "hidden");
               }
             });
-            $(".popup__close").click(function(event) {
-                p.css("visibility", "hidden").css("opacity", "0");
-                $(vidHolder).css("display", "none");
-                if (isVideo) toggleVideo("hide");
-                isVideo = false;
+            $(".popup__close").click(function() {
+              p.css("display", "none");
+              $(vidHolder).css("display", "none");
+              //scrollMagicController.enabled(true);
+              // $(iframe).css("visibility", "hidden");
             });
 
             //video popup
             function toggleVideo(state) {
+              // if state == 'hide', hide. Else: show video
+
+              //var iframe = div.getElementsByTagName("iframe")[0].contentWindow;
+              //div.style.display = state == 'hide' ? 'none' : '';
               func = state == "hide" ? "pauseVideo" : "playVideo";
               iframe.postMessage(
                 '{"event":"command","func":"' + func + '","args":""}',
@@ -521,9 +553,33 @@ define(["setTheStyle", "../lib/three.js/three", "../lib/three.js/orbitControls",
               );
             }
 
+            $("#popup__toggle").click(function() {
+              p.css("visibility", "visible").css("opacity", "1");
+            });
+
+            p.click(function(event) {
+              e = event || window.event;
+              if (e.target == this) {
+                $(p)
+                  .css("visibility", "hidden")
+                  .css("opacity", "0");
+                toggleVideo("hide");
+              }
+            });
+
+            $(".popup__close").click(function() {
+              p.css("visibility", "hidden").css("opacity", "0");
+              toggleVideo("hide");
+            });
+
+        */
+
+        //INVESTIGATE FURTHER
+
         window.addEventListener('wheel', function(event){
             event.preventDefault();
             event.stopPropagation();
+            //console.log('enable next: ', enableNext);
             var nextPage;
             if (event.deltaY > 0)
             {
@@ -540,6 +596,7 @@ define(["setTheStyle", "../lib/three.js/three", "../lib/three.js/orbitControls",
                 //console.log('goin to: ', nextPage);
                 if (gotoPageAndFade(nextPage, currentPage)) currentPage = nextPage;
             }
+            //console.log('scroll event: ', event);
         });
 
         $(window).on('touchstart', function(e)
@@ -555,19 +612,40 @@ define(["setTheStyle", "../lib/three.js/three", "../lib/three.js/orbitControls",
         });
         $(window).on('touchmove', function(e)
         {
+            //console.log('touch here');
             e.preventDefault();
+            // if (blockMenuHeaderScroll)
+            // {
+            //     e.preventDefault();
+            // }
         });
 
         document.addEventListener('scroll', function(event){
-            E.preventDefault();
-        });
+            //console.log('event: ', event);
+            //event.preventDefault();
+            //var nextPage;
+
+            // if (event.deltaY > 0)
+            // {
+            //     nextPage = currentPage + 1 < slides.length ? currentPage+1 : -1;
+            // } else {
+            //     nextPage = currentPage - 1 >= 0 ? currentPage - 1 : -1;
+            // }
+
+            // if (nextPage >=0) {
+            //     if (enableNext) {
+            //         runTimer();
+            //     }
+            //     else return;
+            //     gotoPageAndFade(nextPage, currentPage);
+            //     currentPage = nextPage;
+            // }
+            //console.log('scroll event: ', event);
+        })
     }
 
     function generateAllGeometries()
     {
-
-        //FUNCTION TO GENERATE THE GEOMETRIE FROM IMAGE DATA
-
         //// First Element is THE RACE IS ON
         var el = createGeomFromImageData(loadedSteps[imageSteps[0]].imgData);
 
@@ -637,11 +715,10 @@ define(["setTheStyle", "../lib/three.js/three", "../lib/three.js/orbitControls",
     }
     var time = 0;
     rloop.Animate = function(a) {
-        //looping animation function
-        //GROUTS ARE DIFFERENT TWEENING GROUPS THAAT EACH CONTAIN ANIMATIONS THAT NEED TO RUN/STOP AT DIFFERENT TIMES 
-
         //console.log('a: ', a);
         if (debugging) stats.begin();
+
+
 
         TWEEN.update();
         groupA.update();
@@ -659,6 +736,11 @@ define(["setTheStyle", "../lib/three.js/three", "../lib/three.js/orbitControls",
         {
             //if (rloop.bufferParticles) console.log('animating particles: ', rloop.bufferParticles.geometry.attributes.alpha.array[0])
             rloop.particles.geometry.verticesNeedUpdate = true;
+            // for (var i = 0, i3 = 0; i< rloop.particles.geometry.vertices.length; i++, i3+=3)
+            // {
+
+            // }
+
             rloop.bufferParticles.geometry.attributes.position.needsUpdate = true;
             rloop.bufferParticles.geometry.attributes.alpha.needsUpdate = true; // important!
         }
@@ -666,14 +748,86 @@ define(["setTheStyle", "../lib/three.js/three", "../lib/three.js/orbitControls",
         if (rloop.idleWithParticles)
         {
             time++;
+            //rloop.camera.position.x = Math.sin(time / 500) * 5;
+
             rloop.bufferParticles.rotation.y = Math.sin(time / 5000) ;
+            //console.log('camera moving?')
+            //rloop.camera.lookAt(rloop.bufferParticles.position);
         }
+
+        /*
+        if (rloop.animating)
+        {
+            //console.log('animating:')
+            var countFinishedParticles = 0;
+            for (var i = 0; i< rloop.particles.geometry.vertices.length; i++)
+            {
+                var part = rloop.particles.geometry.vertices[i];
+                if (part.x == part.destination.x && part.y == part.destination.y && part.z == part.destination.z)
+                {
+                    countFinishedParticles++;
+                } else {
+
+                    if (part.back)
+                    {
+                        //part.x += (part.destination.x - part.destination.x * strongEaseOut(part.x, part.destination.x)) * part.speed;
+                        //part.y += ( part.destination.y - part.destination.y * strongEaseOut(part.y, part.destination.y)) * part.speed;
+                        //part.z += (part.destination.z - part.destination.z * strongEaseOut(part.z, part.destination.z)) * part.speed;
+
+                        part.x += (part.destination.x - part.x) * part.speed;
+                        part.y += (part.destination.y - part.y) * part.speed;
+                        part.z += (part.destination.z - part.z) * part.speed;
+                        //console.log('particle: ', (part), ' particle dest: ', (part.destination))
+                        if ((Math.abs(part.x) > Math.abs(part.destination.x)))
+                        //if (Math.abs(part.x - part.destination.x)<0.005)
+                        {
+                            part.x = part.destination.x;
+                            //console.log('bigger x: ', part);
+                        }
+                        if ((Math.abs(part.y) > Math.abs(part.destination.y)))
+                        //if (Math.abs(part.y - part.destination.y)<0.005)
+                            part.y = part.destination.y;
+                        if ((Math.abs(part.z) > Math.abs(part.destination.z)))
+                        //if (Math.abs(part.z - part.destination.z)<0.005)
+                            part.z = part.destination.z;
+                        // (part.destinationOld.x - part.x) * part.speed;
+                        //part.y += (part.destinationOld.y - part.y) * part.speed;
+                        //part.z += (part.destinationOld.z - part.z) * part.speed;
+                    } else {
+                        part.x += (part.destination.x - part.x) * part.speed;
+                        part.y += (part.destination.y - part.y) * part.speed;
+                        part.z += (part.destination.z - part.z) * part.speed;
+
+                        //console.log('difference: ', part.x - part.destination.x)
+                        if (Math.abs(part.x - part.destination.x)<0.005) part.x = part.destination.x;
+                        if (Math.abs(part.y - part.destination.y)<0.005) part.y = part.destination.y;
+                        if (Math.abs(part.z - part.destination.z)<0.005) part.z = part.destination.z;
+                    }
+                }
+            }
+
+            rloop.particles.geometry.verticesNeedUpdate = true;
+
+            //console.log('total finished particles: ', countFinishedParticles);
+            if (countFinishedParticles == rloop.particles.geometry.vertices.length)
+            {
+                //console.log('finished animation step: ', rloop.animationStep);
+                rloop.animating = false;
+                thisAnimationFinished(rloop.animationStep, rloop.goForward);
+            }
+        }
+        */
 
         rloop.renderer.render(rloop.scene, rloop.camera);
         if (debugging) stats.end();
 
+
+
         rloop.frameID = requestAnimationFrame(rloop.Animate);
     }
+
+    //rloop
+  // draw(20);
 
 
     /*** private functions ***/
@@ -1220,10 +1374,14 @@ define(["setTheStyle", "../lib/three.js/three", "../lib/three.js/orbitControls",
 
     function gotoPageAndFade ( goTo, goFrom, spe )
     {
-        // FUNCTION TO SCROLL TO SPECIFIC PAGE
-
+        //console.log('trying to go to page: ', goTo);
         var btnUp = document.getElementById('btnUp');
         var btnDown = document.getElementById('btnDown');
+
+        //var pag2bg = parseInt(document.getElementById('pag2').style.top.split('px')[0]);
+
+        //if (goTo>=2 && pag2bg<0) document.getElementById('pag2').style.top = '0px';
+
         if (goTo >= 1 && btnUp.style.opacity<0.65)
         {
             btnUp.style.opacity = 0.65;
@@ -1247,13 +1405,20 @@ define(["setTheStyle", "../lib/three.js/three", "../lib/three.js/orbitControls",
 
         var sectionIdTo = 'pag'+(goTo+1);
         var sectionIdFrom = 'pag'+(goFrom+1);
+        //console.log('section to scroll to, from: ', $('#'+sectionIdTo), $('#'+sectionIdFrom));
         var d = slidesScenes[goTo].scrollOffset();
 
+        //console.log('d: ', slidesScenes[goTo].scrollOffset());
+        //var topPos = d.offsetTop;
+        //scrollMagicController.scrollTo(sectionIdTo);
         var scrollDist = goTo * window.innerHeight ;
+        // console.log('scroll dist: ', scrollDist) ;
+        //var scrollFrom = {y: document.documentElement.scrollTop};
         var scrollFrom = {y: window.scrollY};
         if (window.pageYOffset) scrollFrom.y = window.pageYOffset;
+        //console.log('scrolling from: ', scrollFrom, ' to ', d);
         tweeningPageAvailable = false;
-
+        //console.log('pageTween: ', pageTween);
         if (pageTween) {
             pageTween.stop();
             pageTween = null;
@@ -1263,7 +1428,10 @@ define(["setTheStyle", "../lib/three.js/three", "../lib/three.js/orbitControls",
             var ease = TWEEN.Easing.Quadratic.InOut;
             if (rloop.portrait) speed = 2000;
             if (spe) speed = spe;
+            //console.log('starting tween!!', rloop.mobile);
              if (rloop.mobile) {
+                // /console.log('should be scrolling to: ', myScroll )
+                //console.log('trying to scroll to on mobile: ', - d );
                 myScroll.scrollTo(0, - d, 1500);
 
             } else {
@@ -1271,9 +1439,21 @@ define(["setTheStyle", "../lib/three.js/three", "../lib/three.js/orbitControls",
                  .to({y:d}, speed)
                  .easing( ease )
                  .onUpdate(function(){
-           
+                    //console.log('updating...', rloop.mobile)
+                    //if (rloop.portrait) window.scrollTo(parseInt(this._object.y), 0);
+                    //else
+
                     window.setTimeout(scrollToValue.bind(null, this._object.y), 5);
 
+                    //window.scrollTo(0, this._object.y);
+                    // if (rloop.mobile) {
+                    //     document.body.scrollTop(this._object.y;
+                    //     console.log('offset: ', window.pageYOffset) ;
+                    // }
+                    //setTimeout(scrollToValue(this._object.y), 10);
+
+
+                    //console.log('window.scrollTo: ', window.scrollTo)
                  })
                  .onComplete(function(){
                     pageTween = null;
@@ -1283,6 +1463,9 @@ define(["setTheStyle", "../lib/three.js/three", "../lib/three.js/orbitControls",
 
             return true;
         }
+        // if (window.history && window.history.pushState) {
+        //     history.pushState("", document.title, sectionIdTo);
+        // }
     }
 
     //enablee disable scroll while video
@@ -1324,30 +1507,51 @@ define(["setTheStyle", "../lib/three.js/three", "../lib/three.js/orbitControls",
 
     function scrollToValue(val)
     {
-        
+        // if($('body').scrollTop()!=val){
+        //     $('body').scrollTop(val);         //Chrome,Safari
+        // }else{
+        //     if($('html').scrollTop()!=val){    //IE, FF
+        //         $('html').scrollTop(val);
+        //     }
+        // }
+        //console.log('scrollting controller to: ', val);
         scrollMagicController.scrollTo(val);
-        
+        //scrollMagicController.update();
+        //window.scrollTo(0, val);
     }
 
     var neededActive = ['0','0','0','0'];
 
     function sliderUpdate ( event )
     {
-        // MAIN FUNCTION THAT CHECKS WHAT IS THE CURRENT SLIDE, WHAT IS THE POSITION IN THE CURRENT SLIDE, 
-        // AND APPLIES ANIMATIONS IN SLIDES ACCORDINGLY
-        // 3D ANIMATIONS ARE ALSO CONTROLLED IN HERE 
+        //groupA.removeAll();
+
+        //console.log(' event in slider:  ', event);
 
         var sectionHeight = $(event.target.triggerElement())[0].clientHeight;
+        //console.log('event: ', event.scrollPos, sectionHeight);
+        //var currentStage = parseInt($(e.target.triggerElement()).attr('id').split('pag')[1]) - 1;
         var scrollPercentInStage = (event.scrollPos - sectionHeight*currentStage) / sectionHeight;
-        
         if (rloop.mobile ) scrollPercentInStage = Math.abs((-event.scrollPos + sectionHeight*currentStage) / sectionHeight);
-        
         var dif = event.scrollPos - prevValue2
         var direction = (dif > 0) ? 'down' : 'up';
-        
         prevValue2 = event.scrollPos;
+        //console.log('direction: ', direction);
+        //console.log('current stage: ', currentStage, ' triggered by: ', $(event.target.triggerElement())[0].id)
+        $('.section-tranz').each(function(){
+            if (this.style.opacity>0 && this.style.opacity<1)
+            {
+                //this.style.opacity = 0;
+                // console.log('this: ', this);
+                // if (idArray.indexOf(this.id)>=0) {
+                //     //exclude this one
+                // } else {
+                //     this.style.opacity = 0;
+                // }
+            }
+        });
 
-
+        //console.log(currentStage , ' ---- ', scrollPercentInStage);
 
         switch (currentStage)
         {
@@ -2569,11 +2773,25 @@ define(["setTheStyle", "../lib/three.js/three", "../lib/three.js/orbitControls",
     {
 
         var maxX = getMaxX(fromThisGeom.vertices) +1;
+        //console.log('maxx: ', maxX);
         var arrayY = [];
 
         for (var j = 0;j<fromThisGeom.vertices.length; j++)
         {
-            
+            // fromThisGeom.vertices[j].destTemp = {
+            //     x: fromThisGeom.vertices[j].destination.x,
+            //     y: fromThisGeom.vertices[j].destination.y,
+            //     z: fromThisGeom.vertices[j].destination.z,
+            // }
+
+            //fromThisGeom.vertices[j].destination.x = - maxX;
+            //fromThisGeom.vertices[j].x = - maxX;
+
+            // ACTIVEAZA INAPOI DACA REVENIM LA POZITIE INTERMEDIARA
+
+
+            //console.log('this vert: ', fromThisGeom.vertices[j].destination);
+
             var exists = false;
             for (var q = 0;q<arrayY.length;q++)
             {
@@ -2582,6 +2800,7 @@ define(["setTheStyle", "../lib/three.js/three", "../lib/three.js/orbitControls",
             if (!exists) arrayY.push(fromThisGeom.vertices[j].destination.y);
         }
 
+        //console.log('array y: ', arrayY);
         groupB.removeAll();
         for (j = 0; j<iconSprites.length;j++)
         {
@@ -3049,7 +3268,9 @@ define(["setTheStyle", "../lib/three.js/three", "../lib/three.js/orbitControls",
     var coinTween;
     var coinIsIn = false;
     function executeAfterLoadingCircle() {
-        
+        // coinObject.visible = true;
+        // coinObject.rotation.y = -Math.PI/14;
+
 
         if (coinTween) coinTween.stop();
         coinTween = null;
@@ -3072,7 +3293,9 @@ define(["setTheStyle", "../lib/three.js/three", "../lib/three.js/orbitControls",
     }
 
     function executeAfterExitCircle() {
-        
+        //coinObject.visible = false;
+        //coinObject.rotation.y = Math.PI/2 - Math.PI/11.25 + Math.PI;
+
         if (coinTween) coinTween.stop();
         coinIsIn = false;
         coinTween = null;
@@ -3102,6 +3325,13 @@ define(["setTheStyle", "../lib/three.js/three", "../lib/three.js/orbitControls",
 
             }
 
+            // var ftomTop = document.getElementById('main').scrollTop;
+            // console.log('from Top: ', ftomTop,', deltay: ',event.deltaY, ' scrolltop: ', scrollTop);
+            // rloop.bufferParticles.initialPos = rloop.bufferParticles.position.clone();
+            // new TWEEN.Tween(rloop.bufferParticles.position)
+            //     .to({y: rloop.bufferParticles.position.y + event.deltaY/33}, 500)
+            //     //.easing( TWEEN.Easing.Cubic.InOut )
+            //     .start();
         }, false);
     }
 
@@ -3135,6 +3365,8 @@ define(["setTheStyle", "../lib/three.js/three", "../lib/three.js/orbitControls",
             }
 
             var t = new TWEEN.Tween(part , groupPoints)
+                //.to({x:})
+                //.to({x:[ Math.random()*part.destination.x*8-part.destination.x*2, Math.random()*part.destination.x*6-part.destination.x*4, part.destination.x], y:[Math.random()*part.destination.y*8 - part.destination.y*16, Math.random()*part.destination.y*6 - part.destination.y*12,part.destination.y], z:[Math.random()*part.destination.z*15 - part.destination.z*5, Math.random()*part.destination.z*6 - part.destination.z*4,part.destination.z]}, part.speed * rloop.speedFactor * 3000000)
                 .to({x: [destOnCircle1.x, destOnCircle2.x, destOnCircle3.x, part.destination.x], y: [destOnCircle1.y, destOnCircle2.y, destOnCircle3.y, part.destination.y], z: [destOnCircle1.z, destOnCircle2.z, destOnCircle3.z, part.destination.z]}, part.speed * 100000)
                 .easing( TWEEN.Easing.Sinusoidal.InOut )
                 .interpolation( TWEEN.Interpolation.Bezier )
@@ -3153,6 +3385,7 @@ define(["setTheStyle", "../lib/three.js/three", "../lib/three.js/orbitControls",
                         rloop.animatingTween = false;
                         startAnimationStepOut(2000);
                     }
+                    //rloop.particles.geometry.verticesNeedUpdate = true;
                 })
                 .start();
         }
@@ -3160,7 +3393,8 @@ define(["setTheStyle", "../lib/three.js/three", "../lib/three.js/orbitControls",
 
     function tweenToGeometryFromGeometry(newGeometry, wait, runAfterFinish, ordered)
     {
-        
+        //return;
+        //console.log('running this')
         groupPoints.removeAll();
         TWEEN.removeAll();
         rloop.idleWithParticles = false;
@@ -3201,7 +3435,16 @@ define(["setTheStyle", "../lib/three.js/three", "../lib/three.js/orbitControls",
             }
             //part.i = par;
             part.dest2 = dest2;
-            
+            // if (part.markedDelete)
+            // {
+            //     part.dest2 = {
+            //         x: - Math.random() * 100 + 50,
+            //         y: Math.random() * 50 - 25,
+            //         z: Math.random() * 30, //+  //- 500;
+            //         alpha: 0 ,//( part.markedDelete) ? 0 : 0.2,
+            //         size: Math.random()
+            //     }
+            // }
             if (part.destTemp) {
                 countOnlyAnimated++;
                 part.dest2.x = part.destTemp.x;
@@ -3223,7 +3466,9 @@ define(["setTheStyle", "../lib/three.js/three", "../lib/three.js/orbitControls",
                         if (countAnimationsStarted2 == countAnimationsEnded2)
                         {
                             rloop.geometriesArray[4] = createGeomFromImageData(loadedSteps[imageSteps[3]].imgData);
-                        
+                            //rloop.particles = new THREE.Points(newParticles, material);
+                            //rloop.particles.geometry = newGeometry;
+                            //if (runAfterFinish) runAfterFinish();
                         }
                     })
                     .onStart(function(){
@@ -3244,17 +3489,22 @@ define(["setTheStyle", "../lib/three.js/three", "../lib/three.js/orbitControls",
         //WE ALREADY HAVE THE BUFFER GEOMETRY IF WE STOPPED THE ANIMATION EARLIER
         if (wait == undefined || wait == null) wait = 0;
 
+
+        //rloop.particles.geometry = newGeometry;
         var allparticles = rloop.particles;
         var newParticles = newGeometry;
 
         var vertDifference = newParticles.vertices.length - allparticles.geometry.vertices.length;
         vertDifference = newParticles.vertices.length - rloop.bufferParticles.geometry.attributes.position.length/3
+        //console.log('buffer poz: ',rloop.bufferParticles.geometry.attributes.position.length/3, ', vert dif: ', vertDifference)
         for (var q = 0; q< allparticles.geometry.vertices.length;q++)
         {
             allparticles.geometry.vertices[q].markedDelete = false;
+            //allparticles.geometry.vertices[q].alpha = 0;
         }
         if (vertDifference<0)                                       // we need less particles, mark them for deletion
         {
+            //console.log('taking from array: ', rloop.particles.geometry.vertices, ' a total of: ', Math.abs(vertDifference))
             var tempArr = [];
             if (iterate) {
                 //console.log('iterating...');
@@ -3272,6 +3522,7 @@ define(["setTheStyle", "../lib/three.js/three", "../lib/three.js/orbitControls",
 
             if (vertDifference>0){                               //we need more particles, mark for adding (add some neutral ones)
                 addMoreParticles( vertDifference );
+                //console.log('adding particles: ', vertDifference, rloop.geometriesArray[7]);
                 updateTheBufferGeometryToMoreParticles( vertDifference );
             }
         }
@@ -3290,6 +3541,7 @@ define(["setTheStyle", "../lib/three.js/three", "../lib/three.js/orbitControls",
                 z: Math.random() * 30, //+  //- 500;
                 alpha: Math.random() * 0.5,
                 alpha: 0,
+                //alpha: ( part.markedDelete) ? 0 : 0.2,
                 size: Math.random() * defaultPixedSize
             }
 
@@ -3371,9 +3623,12 @@ define(["setTheStyle", "../lib/three.js/three", "../lib/three.js/orbitControls",
                 })
                 .onComplete(function(){
                     countAnimationsEnded++;
+                    //console.log('animations ended: ', countAnimationsEnded)
                     if (countAnimationsStarted == countAnimationsEnded)
                     {
-  
+                        //rloop.particles = new THREE.Points(newParticles, material);
+                        //rloop.particles.geometry = newGeometry;
+                        //console.log('running after finish')
                         if (runAfterFinish) runAfterFinish();
                     }
                 })
@@ -3401,14 +3656,17 @@ define(["setTheStyle", "../lib/three.js/three", "../lib/three.js/orbitControls",
             var dest = { 
                 size: part / sizeratio
             }
+            //console.log('dest size: ', dest);
             rloop.bufferParticles.geometry.attributes.size.array[par] = dest.size;
         }
         rloop.bufferParticles.geometry.attributes.size.needsUpdate = true;
+        //console.log('changing to sizeratio: ', sizeratio);
     }
 
     function tweenToNewGeometry( newGeometry, wait, randomFactor )
     {
-
+        //console.log('starting new animation:')
+        //TWEEN.removeAll();
         groupPoints.removeAll();
         if (wait == undefined || wait == null) wait = 0;
         if (randomFactor == undefined || randomFactor == null) randomFactor = 1;
@@ -3420,14 +3678,20 @@ define(["setTheStyle", "../lib/three.js/three", "../lib/three.js/orbitControls",
         var vertDifference = newParticles.vertices.length - allparticles.geometry.vertices.length;
 
         vertDifference = newParticles.vertices.length - rloop.bufferParticles.geometry.attributes.position.length/3;
+        //console.log('vert difference: ', vertDifference);
+        //console.log('buffer poz: ',rloop.bufferParticles.geometry.attributes.position.length/3, ', vert dif: ', vertDifference)
         if (vertDifference<0)                                       // we need less particles, mark them for deletion
         {
+            //console.log('buffer geometry length: ', rloop.bufferParticles.geometry.attributes.position.length/3);
+            //console.log('rloop.particles.geometry: ', rloop.particles.geometry.vertices.length, ' difference: ', Math.abs(vertDifference));
             var tempArr = getRandom(rloop.particles.geometry.vertices, Math.abs(vertDifference));
             for (var j=0;j<tempArr.length;j++)
             {
                 var deleteThisParticle = tempArr[j];
                 allparticles.geometry.vertices[tempArr[j].i].markedDelete = true;
+               // deleteThisParticle.markedDelete = true;
             }
+            //console.log('marked again to delete: ', tempArr)
         } else {
             for (var q = 0; q< allparticles.geometry.vertices.length;q++)
             {
@@ -3444,7 +3708,11 @@ define(["setTheStyle", "../lib/three.js/three", "../lib/three.js/orbitControls",
         {
             if (allparticles.geometry.vertices[q].markedDelete) cc++
         }
-        
+        //console.log('total logged for deletion in new geom: ', cc);
+
+        //rloop.bufferParticles = updateNewBufferGeometryFromGeometry( newParticles )// new THREE.Points(updateNewBufferGeometryFromGeometry( rloop.particles ), shaderMaterial);
+        //rloop.bufferParticles = updateNewBufferGeometryFromGeometry ( newParticles )
+
         //ANIMATE ALL TO RANDOM
         var countNewAnimations = 0;
         var countUnmarkedForDelete = 0;
@@ -3484,6 +3752,11 @@ define(["setTheStyle", "../lib/three.js/three", "../lib/three.js/orbitControls",
             part.g = part.color.g;
             part.b = part.color.b;
 
+            //console.log('part color: ', part);
+            //console.log('eroare dupa: ', countUnmarkedForDelete);
+
+
+            //console.log('going to x: ', dest);
             var t = new TWEEN.Tween(part , groupPoints)
                 .to({x:dest.x, y:dest.y, z:dest.z, alpha:dest.alpha, size: dest.size, r: dest2.r, g: dest2.g, b: dest2.b}, part.speed * 60000)
                 .delay(wait)
@@ -3560,11 +3833,13 @@ define(["setTheStyle", "../lib/three.js/three", "../lib/three.js/orbitControls",
         var countNewAnimations = 0;
         rloop.animatingTween = true;
         rloop.animationStep++;
-        
+        //rloop.particlesOld = rloop.particles;
+        //rloop.particles = null;
         var newParticles = createGeomFromImageData(loadedSteps[imageSteps[rloop.animationStep]].imgData);//, loadedSteps[imageSteps[rloop.animationStep]].img);
         var allparticles = rloop.particles;
         var vertDifference = newParticles.vertices.length - rloop.particles.geometry.vertices.length;
-        
+        //vertDifference = newParticles.vertices.length - rloop.bufferParticles.geometry.attributes.position.length/4;
+        //console.log('vertDifference: ',vertDifference);
         if (vertDifference<0)
         {
             var tempArr = getRandom(rloop.particles.geometry.vertices, Math.abs(vertDifference));
@@ -3572,6 +3847,7 @@ define(["setTheStyle", "../lib/three.js/three", "../lib/three.js/orbitControls",
             {
                 var deleteThisParticle = tempArr[j];
                 deleteThisParticle.markedDelete = true;
+                //console.log('marked;');
             }
 
         }
@@ -3579,12 +3855,14 @@ define(["setTheStyle", "../lib/three.js/three", "../lib/three.js/orbitControls",
         for ( var q=0;q< allparticles.geometry.vertices.length;q++ )
         {
             if (allparticles.geometry.vertices[q].markedDelete) cc++;
+            //allparticles.geometry.vertices[q].z = -5;
         }
 
         for (q=0;q<newParticles.vertices.length;q++)
         {
             newParticles.vertices[q].z = -10;
         }
+        //console.log('total logged for deletion: ', cc);
         var countFinalAnimationsStart = 0;
         var countFinalAnimationsEnd = 0;
 
@@ -3597,6 +3875,7 @@ define(["setTheStyle", "../lib/three.js/three", "../lib/three.js/orbitControls",
                 y: Math.random() * 30 - 15,
                 z: Math.random() * 20 //+  //- 500;
             }
+            //console.log('this par: ', par);
             part.i = par;
             part.opacity = 1;
             var alpha =( part.markedDelete) ? 0 : 1;
@@ -3615,6 +3894,8 @@ define(["setTheStyle", "../lib/three.js/three", "../lib/three.js/orbitControls",
                         //console.log('this: ', allparticles.geometry);
                         rloop.bufferParticles.geometry.attributes.alpha.array[this._object.i] = this._object.alpha;
                         rloop.bufferParticles.geometry.attributes.alpha.needsUpdate = true;
+                        //console.log('marked for deletion');
+                        //allparticles.geometry.vertices.splice(allparticles.geometry.vertices.indexOf(this), 1)
                     }
                 })
                 .onComplete(function(){
@@ -3623,6 +3904,7 @@ define(["setTheStyle", "../lib/three.js/three", "../lib/three.js/orbitControls",
                         //console.log('marked for deletion');
                         this._object.z = 500;
                         rloop.bufferParticles.geometry.attributes.position.array[this._object.i*3 + 2] = this._object.z;
+                        //allparticles.geometry.vertices.splice(allparticles.geometry.vertices.indexOf(this), 1)
                     } else {
                         //console.log('countNewAnimations: ', countNewAnimations);
                         if (countNewAnimations<newParticles.vertices.length){
@@ -3715,10 +3997,16 @@ define(["setTheStyle", "../lib/three.js/three", "../lib/three.js/orbitControls",
 
                                         setTimeout(function () { if (myScroll) myScroll.refresh(); }, 150);
 
-                                        scrollMagicController.enabled(true);
+                                        //console.log('magic scroller should be enabled now!')
                                         addWheelEventsAfterStep1();
                                         addEvents();
+
+
+                                        //rloop.scene.add(rloop.bufferParticles);
+                                        //console.log('after: ', rloop.bufferParticles.geometry.attributes.position.count);
+                                        //document.getElementById('body').style.overflow = 'visible';
                                     }
+                                    //console.log('count animations: ', countAnimations)
                                 })
                                 .interpolation( TWEEN.Interpolation.Bezier )
                                 .start();
@@ -3729,12 +4017,21 @@ define(["setTheStyle", "../lib/three.js/three", "../lib/three.js/orbitControls",
                     if (countAnimations==allparticles.geometry.vertices.length)
                     {
                         opacTween1.start();
+                        //rloop.animatingTween = false;
+                        //startAnimationStepOut(allparticles, 1000);
                     }
 
+
+                    //rloop.particles.geometry.verticesNeedUpdate = true;
                 })
                 .start();
         }
     }
+
+    // function tweenToNewGeometry( geometry )
+    // {
+    //     updateNewBufferGeometryFromGeometry(geometry)
+    // }
 
     function tweenOpacityTo(divId, toOpacity, waitMili, speed)
     {
@@ -3808,6 +4105,10 @@ define(["setTheStyle", "../lib/three.js/three", "../lib/three.js/orbitControls",
                 //console.log('checking[',x,'][',y,']: ', imgData.data[x*4  + y*4 * imgData.width])
                 if (imgData.data[x*4  + y*4 * imgData.width] + imgData.data[x*4  + y*4 * imgData.width + 1] + imgData.data[x*4  + y*4 * imgData.width +2 ] > 0 ) {
                     var vert = new THREE.Vector3();
+                    //vert.x = - Math.random() * 1000 + 500;
+                    //vert.y = Math.random() * 1000 - 500;
+                    //vert.z = Math.random() * 500 //- 500;
+
 
                     vert.destination = {
                         x: x - imgData.width / 2,
@@ -3907,9 +4208,27 @@ define(["setTheStyle", "../lib/three.js/three", "../lib/three.js/orbitControls",
             depthTest: false,
             depthWrite:false,
             transparent: true
-            
+            //transparent:    true,
+            //alphaTest: 0.1
+            //map: sprite
         })
 
+        // var shaderMaterial = new THREE.ShaderMaterial( {
+
+        //     uniforms:       uniforms,
+        //     vertexShader: document.getElementById( 'vertexshader' ).textContent,
+        //     fragmentShader: document.getElementById( 'fragmentshaderP' ).textContent,
+        //     blending: THREE.AdditiveBlending,
+        //     depthTest: false,
+        //     depthWrite:false,
+        //     transparent: true
+
+        // } );
+
+
+
+        //console.log('got data: ', imgData, 'img: ', img);
+        //var bufferGeometry = new THREE.BufferGeometry().fromGeometry( geometry );
 
         for (var y = 0; y < imgData.height; y += 1)
         {
@@ -3931,19 +4250,30 @@ define(["setTheStyle", "../lib/three.js/three", "../lib/three.js/orbitControls",
                         z: -10
                     }
                     vert.alpha = 1;
+                    // vert.x = vert.destination.x;
+                    // vert.y = vert.destination.y;
+                    //vert.z = vert.destination.z;
 
                     vert.speed = Math.random() / 200 + rloop.speedFactor;
                     geometry.vertices.push(vert);
+                    //attributes.alpha.value[ geometry.vertices.length-1 ] = 1;
                 }
             }
         }
 
+        // /createThreeCirclesGeometry ( spritesPerCircle, raza1, zDistance, xDistance, numberOfCircles, center, scaleFactor, firstScale )
+        //var testGeometry = createThreeCirclesGeometry(50, 15, 5, 2.5, 4, 0, 1.7, 1.2)
+        //geometry = testGeometry;
         var bufferGeometry = new THREE.BufferGeometry();
         var positions = new Float32Array(geometry.vertices.length * 3) ;
         var colors = new Float32Array(geometry.vertices.length * 3) ;
         var sizes = new Float32Array( geometry.vertices.length );
         var alphas = new Float32Array( geometry.vertices.length * 1 ); // 1 values per vertex
-       
+        //var color = new THREE.Color();
+
+        //console.log('before: ', geometry.vertices.length);
+
+        //console.log('after: ', geometry.vertices.length);
         for (var i = 0, i3 = 0; i< geometry.vertices.length; i++, i3+=3)
         {
             color = geometry.vertices[i].color;
@@ -4023,7 +4353,8 @@ define(["setTheStyle", "../lib/three.js/three", "../lib/three.js/orbitControls",
         //console.log('old geom: ', rloop.bufferParticles.geometry.attributes.size.array.length);
         rloop.bufferParticles.geometry.dispose();
         rloop.bufferParticles.geometry.copy ( newBufferGeometry );
-        
+        //console.log('needed geom: ', newBufferGeometry.attributes.size.array.length)
+        //console.log('new geom: ', rloop.bufferParticles.geometry.attributes.size.array.length)
     }
 
     function updateNewBufferGeometryFromGeometry( newGeometry ) {
@@ -4105,9 +4436,33 @@ define(["setTheStyle", "../lib/three.js/three", "../lib/three.js/orbitControls",
 
         rloop.scene.add(directionalLight)
 
+        //directionalLight.shadow.mapSize.width = 4024;
+        //directionalLight.shadow.mapSize.height = 4024;
+        //directionalLight.shadow.camera.near = 100;
+        //directionalLight.shadow.camera.far = 200;
+        //directionalLight.shadow.camera.fov = 70;
+        //directionalLight.target.position.normalize();
+        //directionalLight.target.position.set( 0, 0, 1000 );
+        //directionalLight.target.position.set( 0, 0, 50 );
+        //directionalLight.shadowMapVisible = true;
+        //simSphere.scene.add( directionalLight );
+        //spotLight = new THREE.SpotLight( 0xffffff , 1);
+        //spotLight.position.set(260, 280, 300 );
+        //spotLight.castShadow = false;
+        /*
+        spotLight.shadow.mapSize.width = 4096;
+        spotLight.shadow.mapSize.height = 4096;
+        spotLight.shadow.camera.near = 100;
+        spotLight.shadow.camera.far = 500;
+        spotLight.shadow.camera.fov = 80;
+        */
+        //simSphere.scene.add( spotLight );
         var dirLight = new THREE.DirectionalLight(0xf2f2f2, 0.9);
         dirLight.position.set(100, 1000, 50);
-     
+        rloop.scene.add(dirLight);
+
+        // var ambLight = new THREE.HemisphereLight(0xfef9f0, 0xFFFFFF, 0.1);
+        // rloop.scene.add(ambLight);
     }
 
     function addStats() {
@@ -4240,7 +4595,10 @@ define(["setTheStyle", "../lib/three.js/three", "../lib/three.js/orbitControls",
         }
 
         var viewport = document.querySelector("meta[name=viewport]");
-      
+        //viewport.setAttribute('content', 'width=device-width, initial-scale='+heightRatio+', maximum-scale=1.0, user-scalable=0');
+        //hardcoded 0.8 heightRatio ca pare ca merge mai bine
+        //if (portrait) viewport.setAttribute('content', 'width=device-width, initial-scale='+0.8+', maximum-scale=1.0, user-scalable=0');
+
         container = document.getElementById("webGLContent");
         width = container.clientWidth;
         height = container.clientHeight;
@@ -4257,8 +4615,11 @@ define(["setTheStyle", "../lib/three.js/three", "../lib/three.js/orbitControls",
         if (zoomFromStandard<1) { //} && window.devicePixelRatio<=1) {
             camFOV = 45 / (zoomFromStandard*1.1);
             if (portrait) camFOV = 45 / (zoomFromStandard*1.1)
+            //defaultPixedSize = 1 * (zoomFromStandard * 1.8);
+            //if (defaultPixedSize>1) defaultPixedSize = 1;
 
             rloop.camera.fov = camFOV;
+            //rloop.camera.aspect = th.width / th.height;
             rloop.camera.updateProjectionMatrix();
         } else {
             camFOV = 45;
@@ -4284,6 +4645,11 @@ define(["setTheStyle", "../lib/three.js/three", "../lib/three.js/orbitControls",
             defaultPixedSize = newDefaultPixedSize;
         }
 
+        //if (window.devicePixelRatio > 1 && !rloop.mobile) defaultPixedSize = defaultPixedSize / 2;
+        //console.log('cam fov: ', rloop.camera.fov, 'zoom from standard: ', zoomFromStandard);
+
+        //document.getElementById('coin').style.
+
         rloop.renderer.setSize( width, height );
         if (prevValue.width != width || prevValue.height!=height)
         {
@@ -4292,19 +4658,25 @@ define(["setTheStyle", "../lib/three.js/three", "../lib/three.js/orbitControls",
                     .to({width: width, height: height}, 200)
                     .easing(TWEEN.Easing.Quadratic.Out)
                     .onUpdate(function(){
-
+                        //document.getElementById("webGL").style.height = this.height+'px';
+                        //document.getElementById("webGL").style.width = this.width+'px';
                         var th = {
                             width: parseInt(this._object.width),
                             height: parseInt(this._object.height)
                         }
+                        //console.log('updating this: ', this);
                         container.style.top = (window.innerHeight - th.height)/2 + 'px';
                         rloop.camera.aspect = th.width / th.height;
                         rloop.camera.updateProjectionMatrix();
-
+                        //rloop.renderer.setSize( th.width, th.height );
 
                     })
                     .start();
         }
+        // if (!portrait) {
+        //     scrollMagicController.enabled(true);
+
+        // }
     }
 
     return rloop;

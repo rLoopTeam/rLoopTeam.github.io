@@ -1,4 +1,7 @@
 //preloaded.js
+//PRELOADS ALL NECESSARY MODULES (JS LIBRARIES))
+// AFTAR THAT CALL MAIN.JS INIT
+
 $(document).ready(function(){
     startloadingall();
 });

@@ -1,3 +1,6 @@
+//CHECKS ROTATION BEFORE STARTING THE WEBSITE
+// RUNS RLOOP.PREINIT
+
 define(["rloop"], function(rloop){
     
     var main = {};
@@ -22,7 +25,7 @@ define(["rloop"], function(rloop){
         // Launch fullscreen for browsers that support it!
         launchFullScreen(document.documentElement); // the whole page
         //launchFullScreen(document.getElementById("videoElement")); // any individual element
-        console.log('portrait:', portrait)
+        //console.log('portrait:', portrait)
         if (portrait) {
             document.getElementById('logoinMiddle').style.visibility = 'visible';
             document.getElementById('plsRotateText').style.display = 'block';
@@ -34,28 +37,6 @@ define(["rloop"], function(rloop){
         window.addEventListener('resize', checkOrientation);
     };
 
-
-    function getData()
-    {
-        //var full = location.protocol+'//mobilalaguna.ro/mobilier/?listProductsForSimulator&category_id=67';
-        var url = 'json/projects.json';
-        $.ajax({
-            url : url,
-            type: 'get',
-            dataType: 'json',
-            success: function(data) {
-                //console.log('data2 : ', data);
-                document.getElementById('preloadScreen').style.visibility = 'hidden';
-                rloop.PreInit(isMobile, data);
-            }, 
-
-            error: function(XMLHttpRequest, textStatus, errorThrown) { 
-                console.log("Status: " + textStatus + " Error: " + errorThrown);
-                //document.getElementById('preloadScreen').style.visibility = 'hidden';
-                rloop.PreInit(false);
-            }  
-        })
-    }
 
     function launchFullScreen(element) {
       if(element.requestFullScreen) {
